@@ -1,0 +1,51 @@
+----Git----
+
+apt-get install git
+
+----MySQL----
+
+apt-get install mysql-server
+
+usr:root
+
+
+psw:19886600nb
+
+
+----Django----
+
+apt-get install python-pip
+
+pip install Django==1.6
+
+----Django-MySQL----
+
+apt-get install  python-mysqldb
+
+----Nginx----
+
+apt-get install gcc
+
+apt-get install g++
+
+curl -O ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.33.tar.gz
+
+curl -O zlib.net/zlib-1.2.8.tar.gz
+
+curl -O nginx.org/download/nginx-1.4.4.tar.gz
+
+>>>install in order:
+
+tar -xzvf xxxx
+
+cd xxxx
+
+./configure
+
+make
+
+make install
+
+>>>start:
+
+/usr/local/nginx/sbin/nginx
