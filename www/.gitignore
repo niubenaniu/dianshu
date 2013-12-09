@@ -1,5 +1,4 @@
 *.swp
-*.pyc
+*.py[cod]
 *.log
 local_settings.py
-
