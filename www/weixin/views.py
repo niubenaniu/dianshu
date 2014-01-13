@@ -5,8 +5,13 @@
 from django.shortcuts import render_to_response,render,RequestContext
 from django.http import HttpResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
+from xml.etree import ElementTree 
+from time import time
+from douban import RequestAPI
+import varify
 import hashlib
-import re
+ 
+#import re
 
 
 @csrf_exempt
@@ -15,89 +20,171 @@ def auto_service(request):
     support the service for 'dianshu'
     '''
     # verify the signature
-    '''
-    varify_flag = is_varified()
-    return HttpResponse(varify_flag) if varify_flag else HttpResponse('signature verify failed!')
-    '''
-    
-    # service
-    reply_msg = auto_reply_service(request)   
-    return reply_msg
-    
-def is_varified(request):
-    '''
-    function: check if the signature verified successful
-    '''
-    echostr = request.GET['echostr']
-    if (check_signature(request)):
-        return HttpResponse(echostr)
+    if request.method == 'GET':
+        token = 'dianshu_weinxin'
+        varify_flag = varify.is_varified(request,token)
+        return HttpResponse(varify_flag) if varify_flag else HttpResponse('signature verify failed!')
     else:
-        return None
-def check_signature(request):
-    '''
-    function: verify the signature
-    '''
-    signature = unicode(str(request.GET['signature']))
-    timestamp = unicode(str(request.GET['timestamp']))
-    nonce = unicode(str(request.GET['nonce']))
-    
-    token = 'dianshu_weinxin'
- 
-    # step 1: get a srot list   
-    sig_array = [token,timestamp,nonce]
-    sig_array.sort()
-    
-    # step 2: get a string
-    sig_str = ''.join(sig_array)
-    
-    # step 3: encrypt by sha1 
-    hash_new = hashlib.sha1()
-    hash_new.update(sig_str)
-    hash_value = hash_new.hexdigest()
-    
-    if (hash_value == signature):
-        return True
-    else:
-        return False
+        # service
+        reply_msg = auto_reply_service(request)
 
+        return reply_msg
+    
+@csrf_exempt
 def auto_reply_service(request):
     '''
      
     '''
-    
+    '''
     # used to received text message xml
     from_user_name_regexp = re.compile(r'<FromUserName><!\[CDATA\[(.+)\]\]></FromUserName>')
     message_type_regexp = re.compile(r'<MsgType><!\[CDATA\[(.+)\]\]></MsgType>')
     content_regexp = re.compile(r'<Content><!\[CDATA\[(.+)\]\]></Content>')
     
+    message_str = ''
+    print request._get_post
     if request.method == 'POST':
         fileData=request.FILES.values()[0]
+        print fileData
         for chunk in fileData.chunks():
-            chunk += chunk
-    
-    form_user_name = from_user_name_regexp.search(chunk)
+            message_str += chunk
+    print message_str
+    form_user_name = from_user_name_regexp.search(message_str)
     form_user_name = form_user_name.group(1)
-    message_type = message_type_regexp.search(chunk)
+    message_type = message_type_regexp.search(message_str)
     message_type = message_type.group(1)
-    content = content_regexp.search(chunk)
+    content = content_regexp.search(message_str)
     content = content.group(1)
+    '''
     
-    c = {'from_user_name':form_user_name,'message_type':message_type,'content':content}
-    print c
-        #   fp.write(chunk)
-        #fp.close()
+    # change to etree method
+    message_str =  request.read()
 
-    return HttpResponse('ok')
-
-def generate_reply_xml(request):
-    generate_content(request)
-    c = {}
-    return render_to_response('book_messages.xml',c)
-
-def generate_book_content(request):
+    root = ElementTree.fromstring(message_str)
+    form_user_name = root.find('FromUserName').text
+    to_user_name = root.find('ToUserName').text
+    message_type = root.find('MsgType').text
     
-    return HttpResponse('ok')
+    context = {'to_user_name':form_user_name,'from_user_name':to_user_name}
 
-def receive_xml(request):
+    if message_type == 'text':
+        content = root.find('Content').text
+        context.update({'content':content})
+        reply_xml = generate_news_reply_xml(request,context)
+    else:
+        reply_xml = generate_text_reply_xml(request,context)
     
-    return HttpResponse('ok')
+    return reply_xml
+
+@csrf_exempt
+def generate_text_reply_xml(request,context):
+    
+    text_xml = '''<xml>
+        <ToUserName><![CDATA[%s]]></ToUserName>
+        <FromUserName><![CDATA[%s]]></FromUserName>
+        <CreateTime>%s</CreateTime>
+        <MsgType><![CDATA[%s]]></MsgType>
+        <Content><![CDATA[%s]]></Content>
+        </xml>
+    '''
+
+    message_type = 'text'
+    content = '''
+亲~偶只能接受文字消息哦
+[撇嘴][撇嘴][撇嘴]
+请回复书名获取图书信息
+[玫瑰][玫瑰][玫瑰]
+    '''
+    create_time = int(time())
+    
+    c = {
+         'to_user_name':context['to_user_name'],
+         'from_user_name':context['from_user_name'],
+         'create_time':create_time,
+         'message_type':message_type,
+         'content':content
+        }
+    
+    text_reply_xml = text_xml % (c['to_user_name'],c['from_user_name'],c['create_time'],c['message_type'],c['content'])    
+    response = HttpResponse(text_reply_xml,content_type='application/xml; charset=utf-8')   
+    
+    return response
+@csrf_exempt
+def generate_news_reply_xml(request,context):
+    
+    book_name = context['content']
+    book_message_for_xml = get_book_message(request,book_name)
+    
+    news_xml = '''<xml>
+        <ToUserName><![CDATA[%s]]></ToUserName>
+        <FromUserName><![CDATA[%s]]></FromUserName>
+        <CreateTime>%s</CreateTime>
+        <MsgType><![CDATA[%s]]></MsgType>
+        <ArticleCount>%s</ArticleCount>
+        <Articles>
+        <item>
+        <Title><![CDATA[%s]]></Title> 
+        <Description><![CDATA[%s]]></Description>
+        <PicUrl><![CDATA[%s]]></PicUrl>
+        <Url><![CDATA[%s]]></Url>
+        </item>
+        </Articles>
+        </xml>
+   '''
+    
+    create_time = int(time())
+    message_type = 'news'
+    article_count = 1
+    title = book_message_for_xml['title']
+    description = book_message_for_xml['description']
+    
+    rating = '''
+很棒：☆☆☆☆☆  81%
+不错：☆☆☆☆      7%
+凑合：☆☆☆         4%
+不好：☆☆             3%
+烂书：☆                3%
+    '''
+    picture_url = book_message_for_xml['picture_url']
+    jump_url = r'http://www.baidu.com'
+    
+    item = [
+            {
+            'title':title,
+            'description':description,
+            'picture_url':picture_url,
+            'jump_url':jump_url
+             }
+            ]
+    
+    c = {
+         'to_user_name':context['to_user_name'],
+         'from_user_name':context['from_user_name'],
+         'create_time':create_time,
+         'message_type':message_type,
+         'article_count':article_count,
+         'item':item
+           }
+    
+    news_reply_xml = news_xml % (c['to_user_name'],c['from_user_name'],c['create_time'],c['message_type'],c['article_count'],c['item'][0]['title'],c['item'][0]['description'],c['item'][0]['picture_url'],c['item'][0]['jump_url'])
+    response = HttpResponse(news_reply_xml,content_type='application/xml; charset=utf-8')
+    
+    return response
+
+def get_book_message(request,book_name):
+    '''
+    get book message from douban api
+    '''
+    rapi = RequestAPI()
+    book_message_dict = {}
+    book_message_for_xml = {}
+    
+    book_message_dict = rapi.search(unicode(book_name).encode('utf-8'))
+    
+    book_message_for_xml.update({'title':book_message_dict['books'][0]['title']})
+    book_message_for_xml.update({'description':book_message_dict['books'][0]['summary']})
+    book_message_for_xml.update({'picture_url':book_message_dict['books'][0]['images']['small']})
+    
+    print book_message_dict['books'][0]['id']
+    return book_message_for_xml
+    
