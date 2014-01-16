@@ -1,9 +1,8 @@
 #-*- coding:utf-8 -*-
 import simplejson
-from utils.request import httpRequest
+from utils.request import HttpRequest
 import logging
 import utils.xmljson
-print 333
 class RequestAPI:
 	def __init__(self):
 		self.hr = HttpRequest()

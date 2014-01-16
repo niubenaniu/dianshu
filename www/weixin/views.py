@@ -6,9 +6,7 @@ from django.http import HttpResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from xml.etree import ElementTree 
 from time import time
-print 111
 from api_douban.douban import RequestAPI
-print 222
 import varify
 import hashlib
 #import re

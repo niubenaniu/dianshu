@@ -83,6 +83,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# add modul path
+weixin_home = os.path.dirname(os.path.dirname(__file__)) + '/weixin'
+os.sys.path.append(weixin_home)
 
 try:
     from local_settings import *
