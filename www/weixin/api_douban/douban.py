@@ -1,9 +1,9 @@
 #-*- coding:utf-8 -*-
 import simplejson
-from request import HttpRequest
+from utils.request import httpRequest
 import logging
-import xmljson
-
+import utils.xmljson
+print 333
 class RequestAPI:
 	def __init__(self):
 		self.hr = HttpRequest()
@@ -48,7 +48,7 @@ class RequestAPI:
 #		return simplejson.loads(_ret) if _ret else {} 
 
 if __name__ == '__main__':
-	import log
+	import utils.log
 	log.initlog('', True)
 	rapi = RequestAPI()
 #	print rapi.search_books('c')

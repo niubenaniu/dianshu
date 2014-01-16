@@ -1,18 +1,17 @@
 # -*- coding:UTF-8 -*-
 
 # createed by niuben at 2013-12-09
-
 from django.shortcuts import render_to_response,render,RequestContext
 from django.http import HttpResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from xml.etree import ElementTree 
 from time import time
-from douban import RequestAPI
+print 111
+from api_douban.douban import RequestAPI
+print 222
 import varify
 import hashlib
- 
 #import re
-
 
 @csrf_exempt
 def auto_service(request):
@@ -168,7 +167,7 @@ def generate_news_reply_xml(request,context):
     
     news_reply_xml = news_xml % (c['to_user_name'],c['from_user_name'],c['create_time'],c['message_type'],c['article_count'],c['item'][0]['title'],c['item'][0]['description'],c['item'][0]['picture_url'],c['item'][0]['jump_url'])
     response = HttpResponse(news_reply_xml,content_type='application/xml; charset=utf-8')
-    
+
     return response
 
 def get_book_message(request,book_name):
@@ -178,8 +177,8 @@ def get_book_message(request,book_name):
     rapi = RequestAPI()
     book_message_dict = {}
     book_message_for_xml = {}
-    
-    book_message_dict = rapi.search(unicode(book_name).encode('utf-8'))
+
+    book_message_dict = rapi.search_books(unicode(book_name).encode('utf-8'))
     
     book_message_for_xml.update({'title':book_message_dict['books'][0]['title']})
     book_message_for_xml.update({'description':book_message_dict['books'][0]['summary']})
