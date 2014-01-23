@@ -6,10 +6,12 @@ from django.http import HttpResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from xml.etree import ElementTree 
 from time import time
-from api_douban.douban import RequestAPI
 import varify
 import hashlib
-#import re
+import os
+
+from api_douban.douban import RequestAPI
+from generate_img.generate_img import generate_image
 
 @csrf_exempt
 def auto_service(request):
@@ -142,9 +144,16 @@ def generate_news_reply_xml(request,context):
 不好：☆☆             3%
 烂书：☆                3%
     '''
-    picture_url = book_message_for_xml['picture_url']
-    jump_url = r'http://www.baidu.com'
+    picture_url_douban = book_message_for_xml['picture_url']
     
+    gi = generate_image(picture_url_douban)
+    picture_url = gi.get_image_url()
+    
+    # 1111 for test
+    book_id = '1111'
+    jump_url_base = r'http://115.28.3.240/weixin/details_page/'
+    jump_url = jump_url_base + book_id
+
     item = [
             {
             'title':title,
@@ -165,7 +174,7 @@ def generate_news_reply_xml(request,context):
     
     news_reply_xml = news_xml % (c['to_user_name'],c['from_user_name'],c['create_time'],c['message_type'],c['article_count'],c['item'][0]['title'],c['item'][0]['description'],c['item'][0]['picture_url'],c['item'][0]['jump_url'])
     response = HttpResponse(news_reply_xml,content_type='application/xml; charset=utf-8')
-
+    
     return response
 
 def get_book_message(request,book_name):
@@ -182,6 +191,20 @@ def get_book_message(request,book_name):
     book_message_for_xml.update({'description':book_message_dict['books'][0]['summary']})
     book_message_for_xml.update({'picture_url':book_message_dict['books'][0]['images']['small']})
     
-    print book_message_dict['books'][0]['id']
     return book_message_for_xml
+
+def get_cover(request,cover_name):    
+    '''
+    address for book cover
+    '''
+    img_path = os.path.dirname(__file__) + '/static/douban_image/' + cover_name
+    img_f = open(img_path,'rb')
+    img_content = img_f.read() 
+    img_f.close()
+    response = HttpResponse(img_content,content_type='image/jpeg')
+    #response = HttpResponse('ok')
+    return response
     
+def details_page(request,book_id):
+    
+    return HttpResponse(book_id)
