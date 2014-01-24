@@ -10,6 +10,7 @@ class MongodbHandler:
         self.configs = configs
         self._client = None
         self._conn = None
+        self._retry_conn = 3
         pass
 
     def _get_conn(self, configs={}):
@@ -29,11 +30,16 @@ class MongodbHandler:
             return [_client, _conn]
     
     def connect(self):
+        _i = 0
         while self._client is None:
             self._client, self._conn = self._get_conn(self.configs)
 
             if self._client is None:
+                _i += 1
+                if _i == self._retry_conn:
+                    break
                 time.sleep(5)
+            
 
     def disconnect(self):
         if self._client:
