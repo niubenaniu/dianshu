@@ -10,7 +10,7 @@ import varify
 import hashlib
 import os
 
-from api_douban.douban import RequestAPI
+from api_douban.service import RequestService
 from generate_img.generate_img import generate_image
 
 @csrf_exempt
@@ -150,7 +150,7 @@ def generate_news_reply_xml(request,context):
     picture_url = gi.get_image_url()
     
     # 1111 for test
-    book_id = '1111'
+    book_id = book_message_for_xml['book_id']
     jump_url_base = r'http://115.28.3.240/weixin/details_page/'
     jump_url = jump_url_base + book_id
 
@@ -181,7 +181,7 @@ def get_book_message(request,book_name):
     '''
     get book message from douban api
     '''
-    rapi = RequestAPI()
+    rapi = RequestService()
     book_message_dict = {}
     book_message_for_xml = {}
 
@@ -189,8 +189,10 @@ def get_book_message(request,book_name):
     
     book_message_for_xml.update({'title':book_message_dict['books'][0]['title']})
     book_message_for_xml.update({'description':book_message_dict['books'][0]['summary']})
-    book_message_for_xml.update({'picture_url':book_message_dict['books'][0]['images']['small']})
-    
+    book_message_for_xml.update({'picture_url':book_message_dict['books'][0]['images']['large']})
+    # book id now is ISBN
+    book_message_for_xml.update({'book_id':str(book_message_dict['books'][0]['isbn13'])})
+
     return book_message_for_xml
 
 def get_cover(request,cover_name):    
@@ -206,5 +208,18 @@ def get_cover(request,cover_name):
     return response
     
 def details_page(request,book_id):
+    '''
+    details page of news
+    '''
+    # judge if use mobile device
+    #print request.META['HTTP_USER_AGENT']
     
-    return HttpResponse(book_id)
+    # get book messages by book id(ISBN)
+    rapi = RequestService()
+    book_message = rapi.search_book_by_isbn(book_id)
+
+    c = {
+         'c':book_message
+         }
+    
+    return render_to_response('details_page.html',c)
