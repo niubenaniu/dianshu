@@ -25,6 +25,7 @@ class RequestAPI:
 		self.url_get_book = 'v2/book/%s'
 		self.url_get_book_tag = 'v2/book/%s/tags'
 		self.url_get_book_review = 'book/subject/%s/reviews'
+                self.url_get_book_by_isbn = '/v2/book/isbn/%s'
 
 	def search_books(self, keyword, tag='', offset=0, limit=1):
 		_url = '%s/%s' % (self.home, self.url_search_book)
@@ -59,6 +60,13 @@ class RequestAPI:
 		return _j_ret
 #		return simplejson.loads(_ret) if _ret else {} 
 
+        def get_book_by_isbn(self, isbn):
+                _url = '%s/%s' % (self.home, self.url_get_book_by_isbn % isbn)
+		_ret = self.hr.get(_url)
+		logging.debug('get book by isbn:%s' % _ret)
+		return simplejson.loads(_ret) if _ret else {}
+
+                
 if __name__ == '__main__':
 	import utils.log
 	log.initlog('', True)
@@ -67,4 +75,5 @@ if __name__ == '__main__':
 #	print rapi.get_book(2193877)
 #	print rapi.get_book_tags(2193877)
 #	print rapi.get_book_reviews(2193877)
+        print rapi.get_book_by_isbn('9787532706907')
 	print rapi.get_book_reviews(2193877, 0, 1, False)

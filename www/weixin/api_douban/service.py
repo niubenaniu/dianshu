@@ -22,7 +22,6 @@ class RequestService:
 
     def __init__(self):
         self.dbHandler = dbfry.getInterface('mongodb', configs.db)
-        self.dbHandler.connect()
         self.requestAPI = RequestAPI()
         self.collection = 'douban_book'
         pass
@@ -30,18 +29,32 @@ class RequestService:
     def search_books(self, keyword, tag='', offset=0, limit=1):
         _res = self.requestAPI.search_books(keyword, tag, offset, limit)
         if _res.has_key('books'):
-            self.dbHandler.connect()
-            for _book in _res['books']:
-                _exist_book = self.dbHandler.find_one(self.collection, {'isbn13' : _book['isbn13']})
-                if not _exist_book:
+            try:
+                self.dbHandler.connect()
+                for _book in _res['books']:
                     self.dbHandler.insert(self.collection, _book)
-            self.dbHandler.disconnect()
+            except BaseException as e:
+                logging.error('error save search books')
+                logging.exception(traceback.format_exc())
+            finally:
+                self.dbHandler.disconnect()
         return _res
         
     def search_book_by_isbn(self, isbn):
-        self.dbHandler.connect()
-        _book = self.dbHandler.find_one(self.collection, {'isbn13' : str(isbn)})
-        self.dbHandler.disconnect()
+        _book = None
+        try:
+            self.dbHandler.connect()
+            _book = self.dbHandler.find_one(self.collection, {'isbn13' : str(isbn)})
+        except BaseException as e:
+            logging.error('error search book by isbn')
+            logging.exception(traceback.format_exc())
+
+        finally:
+            self.dbHandler.disconnect()
+
+        if _book is None:
+            _book = self.requestAPI.get_book_by_isbn('9787532706907')
+            
         return _book
 
 
@@ -51,4 +64,3 @@ if __name__ == '__main__':
     service.search_books("百年孤独")
     print service.search_book_by_isbn('9787532706907')
     pass
-
