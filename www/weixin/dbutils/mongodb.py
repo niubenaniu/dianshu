@@ -38,7 +38,7 @@ class MongodbHandler:
                 _i += 1
                 if _i == self._retry_conn:
                     break
-                time.sleep(5)
+                time.sleep(2)
             
 
     def disconnect(self):
@@ -46,10 +46,16 @@ class MongodbHandler:
             self._client.disconnect()
 
     def insert(self, collection_name, documents):
+        if self._conn is None:
+            return
+
         if documents:
             self._conn[collection_name].insert(documents)
 
     def find(self, collection_name, wheres={}, sorts=None, limit=None, offset=None, returns={}):
+        if self._conn is None:
+            return []
+
         if returns:
             _cursor = self._conn[collection_name].find(wheres, returns)
         else:
@@ -73,6 +79,9 @@ class MongodbHandler:
         return self.find(collection_name, wheres)
 
     def find_one(self, collection_name, wheres={}):
+        if self._conn is None:
+            return None
+
         return self._conn[collection_name].find_one(wheres)
 
     def find_by_oid(self, collection_name, oid):
@@ -83,6 +92,9 @@ class MongodbHandler:
 
     def remove(self, collection_name, wheres={}):
         _rs = None
+        if self._conn is None:
+            return _rs
+        
         if wheres:
             _rs = self._conn[collection_name].remove(wheres)
         return _rs
