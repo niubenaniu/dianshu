@@ -18,13 +18,17 @@ def _x2j(x):
 	for _n in x:
 		_r = _x2j(_n)
 		if _r:
-			if _n.tag in _j:
-				if not(type(_j[_n.tag]) is types.ListType):
-					_j[_n.tag] = [_j[_n.tag]]
-				_j[_n.tag].append(_r)
+                        _tag = _tag_deal(_n.tag)
+			if _tag in _j:
+				if not(type(_j[_tag]) is types.ListType):
+					_j[_tag] = [_j[_tag]]
+				_j[_tag].append(_r)
 			else:
-				_j[_n.tag] = _r
+				_j[_tag] = _r
 	return _j
+
+def _tag_deal(_tag):
+        return _tag.split(':')[-1].split('}')[-1]
 
 def json2xml(j):
 	_xml = ET.fromstring('<root/>')
@@ -51,6 +55,6 @@ def _j2x(x, j):
 
 	
 if __name__ == '__main__':
-	j = xml2json('<?xml version=\'1.0\' encoding=\'utf-8\' ?><root last=\'5\'><user id=\'1\'><tel vaule=\'123\'></tel><tel>erre</tel></user></root>')
+	j = xml2json('<?xml version=\'1.0\' encoding=\'utf-8\' ?><root xmlns="http://www.w3.org/2005/Atom" last=\'5\'><user id=\'1\'><tel vaule=\'123\'></tel><tel>erre</tel></user></root>')
 	print j
 	print json2xml(j)
