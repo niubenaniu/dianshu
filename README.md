@@ -11,7 +11,7 @@
 3. **Pillow**
 
     **Pillow是Python的图片处理模块。**
-    <pre>apt-get install libtiff4-dev libjpeg8-dev zlib1g-dev     libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev
+    <pre>apt-get install libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev
     sudo ln -s /usr/lib/`uname -i`-linux-gnu /libfreetype.so /usr/lib/
     sudo ln -s /usr/lib/`uname -i`-linux-gnu/libjpeg.so /usr/lib/
     sudo ln -s /usr/lib/`uname -i`-linux-gnu/libz.so /usr/lib/
