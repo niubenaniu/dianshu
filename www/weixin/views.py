@@ -223,3 +223,7 @@ def details_page(request,book_id):
          }
     
     return render_to_response('details_page.html',c)
+
+def test_page(request):
+    
+    return render_to_response('test_page.html')
