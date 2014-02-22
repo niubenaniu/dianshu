@@ -1,0 +1,345 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Test Page</title>
+<link rel="stylesheet" href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script>
+$(function () {
+    $('#myTab a:first').tab('show')
+  })
+</script>
+<style type="text/css">
+div.main{
+  width:100%;
+  height:500px;
+}
+div.clear {
+  clear:both;
+}
+aside.img {
+  padding:5px 5px 5px 0px;
+  width:auto;
+  height:100%;
+  float:left;
+}
+
+aside.img > img{
+  max-height:100%;
+}
+
+section.basic {
+  padding;5px;
+  height:100%;
+  width:auto;
+  float:left;
+}
+
+section.book > div {
+  width: 100%;
+  font-size:300%;
+  padding:5px 8px 0px 8px;
+}
+
+section.book > .name{
+  font-size:800%;
+  color:blue;
+}
+
+section.book > .buy{
+  font-size:600%;
+  margin-top:8px;
+  color:gray;
+}
+
+article.node {
+  width:100%;
+  height:auto;
+}
+
+article.node > div.title {
+  margin:8px 2px 8px 2px;
+  border-bottom: 5px solid #aaa;
+}
+
+article.node > div.title > div.name {
+  border-radius:0.25em 0.25em 0em 0em;
+  position: relative;
+  top: 0px;
+  font-size: 450%;
+  background-color: #1c70ed;
+  width: 30%;
+  height: 15%;
+  vertical-align: middle;
+  text-align: center;
+  color:white;
+}
+
+article.node > section.content {
+  position: relative;
+  padding: 8px;
+  left: 0px;
+  width: 100%;
+  height: auto;
+  top: 15px;
+  font-size:400%;
+}
+
+.sprogress {
+  position:relative;
+  top: -68px;
+  left:35%;
+  width:50%;
+  margin:0px;
+  background-color: white;
+  font-size:70%;
+  font-weight: bolder;
+  height:50px;
+}
+
+
+.sprogress-bar {
+  background-color: #1c70ed;
+}
+
+.sbadge {
+  position:relative;
+  font-size:80%;
+  top:-35px;
+  left:-15px;
+  border: 5px solid #ffffff;
+}
+
+.slabel{
+  height:105px;
+  display: inline-block;
+}
+
+.cmn_btn {
+  border: 1px solid black;
+  background: white;
+  color: black;
+  padding: 0px;
+  margin:0px;
+  cursor: pointer;
+  font-size:80%;
+}
+
+div.spgs {
+  width:100%;
+  height:50px;
+}
+
+table.comment, table.comment tr, table.comment td {
+  padding:0px;
+  margin:0px;
+  border:0;
+}
+
+table.comment td {
+  vertical-align:middle;
+}
+
+table.comment img.userpic {
+  max-width:100%;
+}
+
+table.comment div.username {
+  font-size:100%;
+  text-align:center;
+  padding-top:8px;
+}
+
+
+table.comment article {
+  padding-left:10px;
+}
+
+table.comment article header {
+
+}
+
+table.comment article section {
+
+}
+
+table.comment article footer {
+  float:right;
+}
+</style>
+</head>
+<body>
+<!-- cover -->
+<div class="main">
+<aside class="img">
+<img class="img-responsive" src="http://img3.douban.com/lpic/s6384944.jpg" alt="封面不存在">
+</aside>
+<section class="basic book">
+<div class="name">百年孤独</div>
+<div class="author">作者:我也不知道谁写的</div>
+<div class="author">出版社:陕西出版社</div>
+<div class="buy">
+<span class="price">￥ 10.9</span>
+<input type="button" class="cmn_btn" value="点击购买"/>
+</div>
+</section>
+</div>
+<div class="clear"></div>
+
+<!-- tag cloud -->
+<article class="node">
+<div class="title">
+<div class="name">div</div>
+</div>
+<section class="content">
+<span class="slabel"><span class="label label-default">Windows 配置规范</span><span class="badge sbadge">21339</span></span>
+<span class="slabel"><span class="label label-default">SQL Server 配置规范</span><span class="badge sbadge">12790</span></span>
+<span class="slabel"><span class="label label-default">mySQL 配置规范(Linux)</span><span class="badge sbadge">12790</span></span>
+<span class="slabel"><span class="label label-default">Oracle 配置规范(Windows)</span><span class="badge sbadge">12790</span></span>
+<span class="slabel"><span class="label label-default">AIX 配置规范</span><span class="badge sbadge">12790</span></span>
+<span class="slabel"><span class="label label-default">Nginx 配置规范(Linux)</span><span class="badge sbadge">12790</span></span>
+<span class="slabel"><span class="label label-default">Cisco Router 配置规范</span><span class="badge sbadge">12790</span></span>
+<span class="slabel"><span class="label label-default">HP-UX 配置规范</span><span class="badge sbadge">12790</span></span>
+</section>
+</article>
+
+<!-- judge chart -->
+<article class="node">
+<div class="title">
+<div class="name">div</div>
+</div>
+<section class="content">
+
+<div style="spgs">
+<span>类型1:</span><span>图标1</span>
+<div class="progress sprogress">
+  <div class="progress-bar sprogress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+  </div>
+  <span>&nbsp;100%</span>
+</div>
+</div>
+
+<div style="spgs">
+<span>类型2:</span><span>图标2</span>
+<div class="progress sprogress">
+  <div class="progress-bar sprogress-bar" role="progressbar" aria-valuenow="72.54" aria-valuemin="0" aria-valuemax="100" style="width: 72.54%;">
+  </div>
+  <span>&nbsp;72.54%</span>
+</div>
+</div>
+
+<div style="spgs">
+<span>类型3:</span><span>图标3</span>
+<div class="progress sprogress">
+  <div class="progress-bar sprogress-bar" role="progressbar" aria-valuenow="19.28" aria-valuemin="0" aria-valuemax="100" style="width: 19.28%;">
+  </div>
+  <span>&nbsp;19.28%</span>
+</div>
+</div>
+
+<div style="spgs">
+<span>类型4:</span><span>图标4</span>
+<div class="progress sprogress">
+  <div class="progress-bar sprogress-bar" role="progressbar" aria-valuenow="7.25" aria-valuemin="0" aria-valuemax="100" style="width: 7.25%;">
+  </div>
+  <span>&nbsp;7.25%</span>
+</div>
+</div>
+
+<div style="spgs">
+<span>类型5:</span><span>图标5</span>
+<div class="progress sprogress">
+  <div class="progress-bar sprogress-bar" role="progressbar" aria-valuenow="0.85" aria-valuemin="0" aria-valuemax="100" style="width: 0.85%;">
+  </div>
+  <span>&nbsp;0.85%</span>
+</div>
+</div>
+
+<div style="spgs">
+<span>类型6:</span><span>图标6</span>
+<div class="progress sprogress">
+  <div class="progress-bar sprogress-bar" role="progressbar" aria-valuenow="0.08" aria-valuemin="0" aria-valuemax="100" style="width: 0.08%;">
+  </div>
+  <span>&nbsp;0.08%</span>
+</div>
+</div>
+</section>
+</article>
+
+
+<!-- comment tab -->
+<article class="node">
+<div class="title">
+<div class="name">div</div>
+</div>
+<section class="content">
+<ul id="myTab" class="nav nav-tabs">
+  <li><a href="#douban" data-toggle="tab">豆瓣</a></li>
+  <li><a href="#sina" data-toggle="tab">新浪</a></li>
+  <li><a href="#sina" data-toggle="tab">腾讯</a></li>
+  <li><a href="#tencent" data-toggle="tab">人人</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade in active" id="douban">
+    <div class="list-group">
+      <div class="list-group-item">      
+        <table class="comment">
+          <tr>
+            <td style="width:20%">
+              <img class="userpic" src="http://img3.douban.com/lpic/s6384944.jpg"/>
+              <div class="username">Silence</div>
+            </td>
+            <td style="width:80%">              
+              <article>
+                <header>
+                  <div>无辜都不浪漫</div>
+                  <div>2010-02-19 16:40</div>
+                </header>
+                <section>
+                fsfds房价肯定是拉法基看到了撒jfk到了傻空房里的傻空房里的手机卡立法角度看酸辣粉
+                </section>
+                <footer>
+                  <span>点赞2104   鄙视154</span>
+                </footer>
+              </article>
+            </td>
+          </tr>
+        </table>
+      </div>
+      
+    </div>
+    </div>
+    <div class="tab-pane fade" id="sina">
+    <div class="list-group">
+      <div class="list-group-item">1</div>
+      <div class="list-group-item">2</div>
+      <div class="list-group-item">3</div>
+      <div class="list-group-item">4</div>
+      <div class="list-group-item">5</div>
+    </div>
+    </div>
+    <div class="tab-pane fade" id="tencent">
+     <div class="list-group">
+      <div class="list-group-item">1</div>
+      <div class="list-group-item">2</div>
+      <div class="list-group-item">3</div>
+      <div class="list-group-item">4</div>
+      <div class="list-group-item">5</div>
+    </div>
+    </div>
+       <div class="tab-pane fade" id="renren">
+     <div class="list-group">
+      <div class="list-group-item">1</div>
+      <div class="list-group-item">2</div>
+      <div class="list-group-item">3</div>
+      <div class="list-group-item">4</div>
+      <div class="list-group-item">5</div>
+    </div>
+    </div>
+</div>
+</section>
+</article>
+</body>
+</html>
