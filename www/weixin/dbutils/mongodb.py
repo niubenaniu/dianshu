@@ -10,7 +10,7 @@ class MongodbHandler:
         self.configs = configs
         self._client = None
         self._conn = None
-        self._retry_conn = 3
+        self._retry_conn = 1
         pass
 
     def _get_conn(self, configs={}):
