@@ -261,7 +261,7 @@ def get_text_from_voice(media_id):
     print buf.getvalue()
     buf.close()
     
-    return u'xxx'
+    return u'xxxx'
     
 def details_page(request,book_id):
     '''
