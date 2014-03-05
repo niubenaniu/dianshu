@@ -9,9 +9,13 @@ from time import time
 import varify
 import hashlib
 import os
+import pycurl
+import cStringIO
 
 from api_douban.service import RequestService
 from generate_img.generate_img import generate_image
+
+TOKEN = 'dianshu_weinxin'
 
 @csrf_exempt
 def auto_service(request):
@@ -20,8 +24,7 @@ def auto_service(request):
     '''
     # verify the signature
     if request.method == 'GET':
-        token = 'dianshu_weinxin'
-        varify_flag = varify.is_varified(request,token)
+        varify_flag = varify.is_varified(request,TOKEN)
         return HttpResponse(varify_flag) if varify_flag else HttpResponse('signature verify failed!')
     else:
         # service
@@ -68,15 +71,31 @@ def auto_reply_service(request):
 
     if message_type == 'text':
         content = root.find('Content').text
-        context.update({'content':content})
-        reply_xml = generate_news_reply_xml(request,context)
+        # histort and help messages
+        if content.lower() == 'l':
+            reply_xml = generate_text_reply_xml(request,context,type='history')
+        elif content.lower() == 'h':
+            reply_xml = generate_text_reply_xml(request,context,type='help')
+        else:
+            context.update({'content':content})
+            reply_xml = generate_news_reply_xml(request,context)
+    # 预留语音识别接口
+    #elif message_type == 'voice':
+    #media_id = root.find('MediaId').text
+    #content = get_text_from_voice(media_id)
+    #context.update({'content':content})
+    #reply_xml = generate_news_reply_xml(request,context)
+    elif message_type == 'event':
+        event_type = root.find('Event').text
+        if event_type == 'subscribe':
+            reply_xml = generate_text_reply_xml(request,context,type='greet')
     else:
         reply_xml = generate_text_reply_xml(request,context)
     
     return reply_xml
 
 @csrf_exempt
-def generate_text_reply_xml(request,context):
+def generate_text_reply_xml(request,context,type='adjust'):
     
     text_xml = '''<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
@@ -88,14 +107,36 @@ def generate_text_reply_xml(request,context):
     '''
 
     message_type = 'text'
-    content = '''
-亲~偶只能接受文字消息哦
+    
+    if type == 'greet' or type == 'help':
+        content = '''
+欢迎关注《点书》[微笑]
+
+-------文章推送-------
+每周一本精选图书推荐文章
+-------图书查询-------
+回复书名可自助查询图书信息
+只支持回复文本消息
+-------历史文章-------
+回复“l”
+-------帮助信息-------
+回复“h”
+-------调戏主人[坏笑]----
+微信：Benforward
+    '''   
+    elif type == 'history':
+        content = get_old_Article()
+    else:    
+        content = '''
+亲~偶只认识文字消息
 [撇嘴][撇嘴][撇嘴]
 请回复书名获取图书信息
 [玫瑰][玫瑰][玫瑰]
-    '''
+查看帮助信息请回复“h”
+查看历史文章请回复“l”
+        '''
     create_time = int(time())
-    
+    print content
     c = {
          'to_user_name':context['to_user_name'],
          'from_user_name':context['from_user_name'],
@@ -113,7 +154,7 @@ def generate_news_reply_xml(request,context):
     
     book_name = context['content']
     book_message_for_xml = get_book_message(request,book_name)
-    
+
     news_xml = '''<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
         <FromUserName><![CDATA[%s]]></FromUserName>
@@ -130,13 +171,13 @@ def generate_news_reply_xml(request,context):
         </Articles>
         </xml>
    '''
-    
+
     create_time = int(time())
     message_type = 'news'
     article_count = 1
     title = book_message_for_xml['title']
     description = book_message_for_xml['description']
-    
+
     rating = '''
 很棒：☆☆☆☆☆  81%
 不错：☆☆☆☆      7%
@@ -148,7 +189,7 @@ def generate_news_reply_xml(request,context):
     
     gi = generate_image(picture_url_douban)
     picture_url = gi.get_image_url()
-    
+
     # 1111 for test
     book_id = book_message_for_xml['book_id']
     jump_url_base = r'http://115.28.3.240/weixin/details_page/'
@@ -206,6 +247,21 @@ def get_cover(request,cover_name):
     response = HttpResponse(img_content,content_type='image/jpeg')
     #response = HttpResponse('ok')
     return response
+
+# 订阅号未认证，语音识别不支持，暂时不做，保留接口
+def get_text_from_voice(media_id):
+    buf = cStringIO.StringIO()
+    c = pycurl.Curl()
+    url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' + TOKEN + '&media_id=' + media_id
+
+    c.setopt(c.URL,url)
+    c.setopt(c.WRITEFUNCTION,buf.write)
+    c.perform()
+    print 'xxxxxxxxxxxxxxxxxxxxxxxxx'
+    print buf.getvalue()
+    buf.close()
+    
+    return u'xxx'
     
 def details_page(request,book_id):
     '''
@@ -227,3 +283,16 @@ def details_page(request,book_id):
 def test_page(request):
     
     return render_to_response('test_page.html')
+
+def get_old_Article():
+    '''
+        return a url of old Article
+    '''
+    url = 'http://115.28.3.240/weixin/history'
+    return '点此查看历史文章：' + url
+
+def history_list_page(request):
+    '''
+        list page of history article
+    '''
+    return render_to_response('history_list_page.html')
