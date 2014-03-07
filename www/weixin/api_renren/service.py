@@ -10,7 +10,7 @@ _lib_home = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _lib_home = os.path.normpath(_lib_home)
 
 if not(_lib_home in sys.path):
-        sys.path.insert(0, _lib_home)
+    sys.path.insert(0, _lib_home)
 
 from utils import log
 from dbutils import DbFactory
@@ -26,30 +26,16 @@ class RequestService:
     def search_comment(self, keyword):
 
         _x = self.requestAPI.search_comment(keyword)
-
-        _res = []
-        _root = ET.fromstring('<?xml version="1.0" encoding="utf-8" ?><root>' + _x + '</root>')
-        _node = None
-        _n = None
-        if _root:
-            for _n in _root:
-                if _n.tag == 'div' and _n.attrib['class'] == 'search_left_third':
-                    _node = _n
-                    break
-                
-        if _node:
-            for _n in _node:
-                if _n.tag == 'div' and _n.attrib['class'] == 'search_log':
-                    _node = _n
-                    break
-                
-        if _node:
-            for _n in _node:
-                _rs = self._parse_comment_node(_n)
-                if _rs:
-                    _res.append(_rs)
-
-        return _res
+        _regex = '<div class="all_list_node">\s+<div[^>]+>\s+<a[^>]+>\s+<img([^>]+)>\s+</a>\s+</div>\s+<div[^>]+>\s+<div[^>]+>\s+<a[^>]+>([^<]+)</a><span[^<]+</span>\s+<div[^>]+>(.*?)</div>\s+</div>\s+<div[^>]+>\s+<font[^>]+>([^<]+)</font>\s+<span[^>]+>(.*?)</span>\s+</div>'
+        _regex = '<div class="all_list_node">\s+<div[^>]+>\s+<a[^>]+>\s+<img.*?data-src="([^"]+)"[^>]+>\s+</a>\s+</div>\s+<div[^>]+>\s+<div[^>]+>\s+<a[^>]+>([^<]+)</a><span[^<]+</span>\s+<div[^>]+>(.*?)</div>\s+</div>\s+<div[^>]+>\s+<font[^>]+>([^<]+)</font>\s+<span[^>]+>(.*?)</span>\s+</div>'
+        _ret = []
+        _content_map = {'img' : 0, 'user' :  1, 'comment' : 2, 'time' : 3, 'num' : 4}
+        for _node in re.findall(_regex, _x):
+            _temp = {}
+            for _i in _content_map:
+                _temp[_i] = _node[_content_map[_i]]
+            _ret.append(_temp)
+        return _ret
 
     def _parse_comment_node(self, node):
         _rs = {}

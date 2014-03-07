@@ -20,7 +20,7 @@ class RequestAPI:
         self.home = 'http://browse.renren.com'
         self.url_search_comment = 's/all/ajax'
         
-    def search_comment(self, keyword, limit=1, sort=2, offset=0):
+    def search_comment(self, keyword, limit=5, sort=2, offset=0):
         _url = '%s/%s' % (self.home, self.url_search_comment)
         _ret = self.hr.get(_url,
                            {'q' : keyword,
