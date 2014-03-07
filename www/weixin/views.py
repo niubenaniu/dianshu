@@ -113,7 +113,7 @@ def generate_text_reply_xml(request,context,type='adjust'):
 欢迎关注《点书》[微笑]
 
 -------文章推送-------
-每周一本精选图书推荐文章
+每周一次精选书评推送
 -------图书查询-------
 回复书名可自助查询图书信息
 只支持回复文本消息
@@ -125,7 +125,7 @@ def generate_text_reply_xml(request,context,type='adjust'):
 微信：Benforward
     '''   
     elif type == 'history':
-        content = get_old_Article()
+        content = get_old_article()
     else:    
         content = '''
 亲~偶只认识文字消息
@@ -284,9 +284,9 @@ def test_page(request):
     
     return render_to_response('test_page.html')
 
-def get_old_Article():
+def get_old_article():
     '''
-        return a url of old Article
+        return a url of old article
     '''
     url = 'http://115.28.3.240/weixin/history'
     return '点此查看历史文章：' + url
@@ -296,3 +296,13 @@ def history_list_page(request):
         list page of history article
     '''
     return render_to_response('history_list_page.html')
+
+def history_article_details(request):
+    '''
+        list page of history article
+    '''
+    return render_to_response('history_list_page.html')
+
+def article_record(request):
+    
+    return render_to_response('article_record.html')
