@@ -33,6 +33,10 @@ class RequestService:
         for _node in re.findall(_regex, _x):
             _temp = {}
             for _i in _content_map:
+                if _i == 'num':
+                    _temp[_i] = {}
+                    _temp[_i]['zhan'] = _node[_content_map[_i]]
+                    continue
                 _temp[_i] = _node[_content_map[_i]]
             _ret.append(_temp)
         return _ret
