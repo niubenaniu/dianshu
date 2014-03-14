@@ -13,7 +13,7 @@ def _x2j(x):
 		_j[_a] = x.attrib[_a]
 	
 	if x.text:
-		_j[':text'] = x.text
+		_j['texts'] = x.text
 		
 	for _n in x:
 		_r = _x2j(_n)
@@ -37,7 +37,7 @@ def json2xml(j):
 
 def _j2x(x, j):
 	for _e in j:
-		if _e == ':text':
+		if _e == 'texts':
 			x.text = j[_e]
 		elif type(j[_e]) is types.ListType:
 			for _el in j[_e]:

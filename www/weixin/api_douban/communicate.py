@@ -48,8 +48,9 @@ class RequestAPI:
 		logging.debug('get book tag result:%s' % _ret)
 		return simplejson.loads(_ret) if _ret else {}
 
-	def get_book_reviews(self, id, offset=0, limit=5, orderby_time=True):
+	def get_book_reviews(self, id, offset=0, limit=5, orderby_time=False):
 		_url = '%s/%s' % (self.home_no_ssl, self.url_get_book_review % id)
+        # 默认按投票排序(score)，time表示按发布时间排序
 		_orderby = 'time' if orderby_time else 'score'
 		_ret = self.hr.get(_url, {'start-index' : offset,\
 					  'max-results' : limit,\
@@ -58,7 +59,8 @@ class RequestAPI:
 		_j_ret = xmljson.xml2json(_ret)
 		logging.debug('get book reviews:%s' % _j_ret)
 		return _j_ret
-#		return simplejson.loads(_ret) if _ret else {} 
+
+        #return simplejson.loads(_ret) if _ret else {} 
 
         def get_book_by_isbn(self, isbn):
                 _url = '%s/%s' % (self.home, self.url_get_book_by_isbn % isbn)

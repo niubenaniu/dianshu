@@ -53,11 +53,18 @@ class RequestService:
             self.dbHandler.disconnect()
 
         if _book is None:
-            _book = self.requestAPI.get_book_by_isbn('9787532706907')
+            _book = self.requestAPI.get_book_by_isbn(str(isbn))  # ('9787532706907')
             
         return _book
 
-
+    def get_book_reviews(self,id, offset=0, limit=5, orderby_time=False):
+        _reviews = None
+        _reviews = self.requestAPI.get_book_reviews(id, offset=offset, limit=limit, orderby_time=orderby_time)
+        
+        if _reviews is None:
+            return {}
+        return _reviews
+        
 if __name__ == '__main__':
     log.initlog('', True)
     service = RequestService()

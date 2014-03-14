@@ -49,6 +49,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+# SESSION control
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+
+SESSION_FILE_PATH = '/tmp'
+
+
 ROOT_URLCONF = 'www.urls'
 
 WSGI_APPLICATION = 'www.wsgi.application'

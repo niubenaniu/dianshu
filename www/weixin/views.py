@@ -2,7 +2,7 @@
 
 # createed by niuben at 2013-12-09
 from django.shortcuts import render_to_response,render,RequestContext
-from django.http import HttpResponse,Http404
+from django.http import StreamingHttpResponse,HttpResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from xml.etree import ElementTree 
 from time import time
@@ -11,6 +11,7 @@ import hashlib
 import os
 import pycurl
 import cStringIO
+import re
 
 from api_douban.service import RequestService
 from generate_img.generate_img import generate_image
@@ -136,7 +137,7 @@ def generate_text_reply_xml(request,context,type='adjust'):
 查看历史文章请回复“l”
         '''
     create_time = int(time())
-    print content
+
     c = {
          'to_user_name':context['to_user_name'],
          'from_user_name':context['from_user_name'],
@@ -257,13 +258,13 @@ def get_text_from_voice(media_id):
     c.setopt(c.URL,url)
     c.setopt(c.WRITEFUNCTION,buf.write)
     c.perform()
-    print 'xxxxxxxxxxxxxxxxxxxxxxxxx'
+
     print buf.getvalue()
     buf.close()
     
     return u'xxxx'
     
-def details_page(request,book_id):
+def details_page(request,book_isbn):
     '''
     details page of news
     '''
@@ -272,14 +273,74 @@ def details_page(request,book_id):
     
     # get book messages by book id(ISBN)
     rapi = RequestService()
-    book_message = rapi.search_book_by_isbn(book_id)
+    book_message = rapi.search_book_by_isbn(book_isbn)
+    book_id = book_message['id']
+    request.session['book_id'] = book_id
 
     c = {
-         'c':book_message
+         # get book_message from douban API
+         'tags':book_message['tags'],
+         'cover':book_message['images']['large'],
+         'title':book_message['title'],
+         'author':book_message['author'],
+         'publisher':book_message['publisher'],
+         'price':book_message['price'],
+         'rating':book_message['rating'],
+         'author_intro':book_message['author_intro'],
+         'summary':book_message['summary'],
+         'id':book_message['id'],
+         # get book_message from spider
+         'rating_details':1,
          }
     
     return render_to_response('details_page.html',c)
 
+def get_book_reviews_by_offset(request,is_offset=0):
+    '''
+        get book reviews by offset via use Ajax method
+    '''    
+    if not is_offset:
+        request.session['next_offset'] = 0
+    else:
+        request.session['next_offset'] += 5    
+
+    book_id = request.session['book_id']
+
+    rapi = RequestService()
+    book_reviews = rapi.get_book_reviews(book_id.encode('utf-8'))
+    
+    reviews = []
+    reg_exp = re.compile(r'(\d+\-\d+\-\d+).*?(\d+\:\d+)\:')
+    
+    for book_review in book_reviews['entry']:
+        
+        reg_result = reg_exp.match(book_review['published']['texts'])
+        published = reg_result.group(1) + '  ' + reg_result.group(2)
+        
+        author_image = book_review['author']['link'][2]['href'].replace(r'/u',r'/ul')
+        
+        review = {
+                  'author_image' : author_image,
+                  'author_name' : book_review['author']['name']['texts'],
+                  'title' : book_review['title']['texts'],
+                  'rating' : book_review['rating']['value'],
+                  'published' : published,
+                  'summary' : book_review['summary']['texts'],
+                  # 默认头像链接为http://img3.douban.com/icon/uxxx,大图为http://img3.douban.com/icon/ulxxx。
+                  'link' : book_review['link'][1]['href'],
+                  'votes' : book_review['votes']['value'],
+                  'useless' : book_review['useless']['value'],                 
+                  }
+        
+        reviews.append(review)
+    print reviews
+    
+    c = {
+         'reviews':reviews,
+         }
+    
+    return render_to_response('book_reviews.html',c)
+    
 def test_page(request):
     
     return render_to_response('test_page.html')
@@ -291,6 +352,8 @@ def get_old_article():
     url = 'http://115.28.3.240/weixin/history'
     return '点此查看历史文章：' + url
 
+
+# articles record and history list
 def history_list_page(request):
     '''
         list page of history article
