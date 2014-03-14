@@ -17,19 +17,16 @@ from utils import log
 class RequestAPI:
     def __init__(self):
         self.hr = HttpRequest()
-        self.home = 'http://browse.renren.com'
-        self.url_search_comment = 's/all/ajax'
+        self.home = 'http://s.weibo.com/'
+        self.url_search_comment = 'wb/%s'
         
-    def search_comment(self, keyword, limit=5, sort=2, offset=0):
-        _url = '%s/%s' % (self.home, self.url_search_comment)
+    def search_comment(self, keyword, offset=0, sort='hot'):
+        _url = '%s/%s' % (self.home, self.url_search_comment % keyword)
         _ret = self.hr.get(_url,
-                           {'q' : keyword,
-                            'limit' : limit,
-                            'offset' : offset,
-                            'sort' : sort,
-                            'range' : 0,
-                            't' : 2,
-                            'defaultFirst' : 0
+                           {'offset' : offset,
+                            'xsort' : sort,
+                            'scope' : 'ori',
+                            'page' : offset
                            })
         logging.debug('search result:%s' % _ret)
 
@@ -39,4 +36,4 @@ if __name__ == '__main__':
     log.initlog('', True)
     rapi = RequestAPI()
 
-    print rapi.search('百年孤独')
+    print rapi.search_comment('百年孤独')
