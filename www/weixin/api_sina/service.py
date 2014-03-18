@@ -34,6 +34,7 @@ class RequestService:
         _num_regex = '<a[^>]+>.*?<em[^>]+>.*<\\\\/em>(.*?)</a>.*<a[^>]>(.*?)<\\\\/a>.*?<a[^>]>(.*?)<\\\\/a>'
         _num_map = {1 : 'zan', 2 : 'zhan', 4 : 'ping'}
         _ret = []
+        
         for _node in re.findall(_regex, _x):
             for _nd in re.findall(_node_regex, _node):
                 _temp = {}
