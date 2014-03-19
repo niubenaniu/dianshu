@@ -31,8 +31,9 @@ class RequestService:
         _regex = 'STK && STK.pageletM && STK.pageletM.view\({"pid":"pl_wb_feedlist",.*?"html":([^}]+)}\)'
 #        _node_regex = '<dl[^>]+>.*?<dt[^>]+>.*?<a[^>]+>.*?<img.*?src=\\\\"([^"]+)"[^>]+>.*?<\\\\/a>.*?<\\\\/dt>.*?<dd[^>]+>.*?<p[^>]+>(.*?)<\\\\/p>.*?<ul[^>]+>.*?<\\\\/ul>.*?<dl[^>]+>.*?<\\\\/dl>.*?<p[^>]+>.*?<span>(.*?)<\\\\/span>.*?<a[^>]+>(.*?)<\\\\/a>.*?<a[^>]+>(.*?)<\\\\/a>'
         _node_regex = '<dl[^>]+>.*?<dt[^>]+>.*?<a[^>]+>.*?<img.*?src=\\\\"([^"]+)"[^>]+>.*?<\\\\/a>.*?<\\\\/dt>.*?<dd[^>]+>.*?<p[^>]+>.*?<a[^>]+>(.*?)<a[^>]+>.*?<\\\\/a>.*?<\\\\/a>.*?<em>(.*?)<\\\\/em>.*?<\\\\/p>.*?<ul[^>]+>.*?<\\\\/ul>.*?<dl[^>]+>.*?<\\\\/dl>.*?<p[^>]+>.*?<span>(.*?)<\\\\/span>.*?<a[^>]+>(.*?)<\\\\/a>.*?<a[^>]+>(.*?)<\\\\/a>'
-        _num_regex = '<a[^>]+>.*?<em[^>]+>.*<\\\\/em>(.*?)</a>.*<a[^>]>(.*?)<\\\\/a>.*?<a[^>]>(.*?)<\\\\/a>'
-        _num_map = {1 : 'zan', 2 : 'zhan', 4 : 'ping'}
+        #_num_regex = '<a[^>]+>.*?<em[^>]+>.*<\\\\/em>(.*?)</a>.*<a[^>]>(.*?)<\\\\/a>.*?<a[^>]>(.*?)<\\\\/a>'
+        _num_regex = r'\\u8d5e<\\/em>\((\d*)\).*\\u8f6c\\u53d1\((\d*)\).*\\u8bc4\\u8bba\((\d*)\)'
+        _num_map = {1: 'praises', 2: 'retweets', 3: 'reviews'}
         _ret = []
         
         for _node in re.findall(_regex, _x):
@@ -43,11 +44,16 @@ class RequestService:
                 _temp['comment'] = _nd[2]
                 _temp['num'] = {}
                 _idx = 0
-                for _num in re.findall(_num_regex, _nd[3]):
-                    _idx += 1
-                    _t = _num_map.get(_idx)
-                    if _t is not None:
-                        _temp['num'][_t] = _num
+                # modified by niuben at 2014-03-19
+                m = re.search(_num_regex, _nd[3])
+                try:
+                    for _num in (m.group(1),m.group(2),m.group(3)):
+                        _idx += 1
+                        _t = _num_map.get(_idx)
+                        if _t is not None:
+                            _temp['num'][_t] = _num
+                except:
+                    pass
                 _temp['time'] = _nd[4]
                 _temp['from'] = _nd[5]
                 _ret.append(_temp)
