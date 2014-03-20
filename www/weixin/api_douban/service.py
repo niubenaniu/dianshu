@@ -65,9 +65,16 @@ class RequestService:
             return {}
         return _reviews
         
+    def get_ratings(self,id):
+        _ratings = self.requestAPI.get_ratings(id)
+        
+        return _ratings
+        
 if __name__ == '__main__':
     log.initlog('', True)
     service = RequestService()
     service.search_books("百年孤独")
-    print service.search_book_by_isbn('9787532706907')
+    #print service.search_book_by_isbn('9787532706907')
+    #pass
+    print service.get_ratings(6082808)
     pass
