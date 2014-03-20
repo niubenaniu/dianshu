@@ -88,7 +88,10 @@ class RequestAPI:
                     _ratings = [
                                 {
                                  'name': '力荐',
-                                 'y': float(_ratings_m.group(1))
+                                 'y': float(_ratings_m.group(1)),
+                                 'sliced':'true',
+                                 'secected':'true',
+                    
                                  },
                                 {
                                  'name': '推荐',
