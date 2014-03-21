@@ -1,0 +1,1 @@
+* * * * * find  /opt/dianshu/www/weixin/static/douban_image/ atime +1 | xargs rm -f 
