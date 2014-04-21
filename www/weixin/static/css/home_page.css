@@ -1,0 +1,237 @@
+/* banner */
+#banner-background,#banner{
+	    height:60px;
+}
+
+#banner-background{
+        position:absolute;
+        top:0px;
+        width:100%;
+        /*background-image:url(http://up.twblog.org/image.php?di=1Q68);*/
+        background-color:black;
+        border-bottom-style:solid;
+        border-bottom-width:1px;
+        border-bottom-color:#bbb;
+        opacity:0.6;
+        filter:alpha(opacity=60); /* 针对 IE8 以及更早的版本 */
+}
+
+#banner{
+        position:relative;
+        left:10%;
+        width:90%;
+        color:#aaa;/*yellowgreen;*/
+}
+
+#banner p{
+        float:left;
+        line-height:100%;
+}
+
+#product-name{
+        font-size:40px;
+        font-weight:bold;
+        padding:10px 0;
+}
+
+#slogan,#vertical-linet,#about{
+        font-size:20px;
+        padding:20px 0;
+}
+
+#about{
+        position:absolute;
+        font-size:20px;
+        right:11.35%;
+        color:#666;
+        padding:20px 60px;
+        letter-spacing:-1px;
+}
+
+#vertical-line{
+        padding:20px 5px;
+}
+
+/* content */
+#content-background,#content{
+        width:100%;
+        height:320px;
+}
+
+#content-background{
+        position:absolute;
+        top:80px;
+        background-color:black;
+        opacity:0.4;
+        filter:alpha(opacity=40); /* 针对 IE8 以及更早的版本 */
+}
+
+#content{
+        position:relative;
+}
+
+#descriptions{
+        position:relative;
+        top:30px;
+        left:10%;
+        width:55%;
+        height:260px;
+        color:#bbb;
+}
+
+#descriptions li{
+        padding-bottom:0;
+        color:#bbb;
+        width:50%;
+}
+
+#user-count{
+	    position:absolute;
+	    bottom:10%;
+	    right:0;
+}
+
+#user-count span{  
+	    font-size:50px;
+	    padding:10px;
+}
+
+#descriptions dt{
+        color:#bbb;
+}
+
+#bcode-img{
+        position:absolute;
+        top:30px;
+        right:10%;
+        width:260px;
+        height:260px;
+}
+
+/* msg */
+#msg-background,#msg{
+        width:100%;
+        height:500px;
+}
+
+#msg-background{
+        position:absolute;
+        top:420px;
+        background-color:black;
+        opacity:0.4;
+        filter:alpha(opacity=40); /* 针对 IE8 以及更早的版本 */
+    
+}
+
+#msg{
+        position:relative;
+	    top:10px;
+}
+
+#article-news,#product-news{
+	    height:440px;
+}
+
+#article-news{
+        position:relative;
+        left:10%;
+        width:55%;
+        top:30px;
+}
+
+.label{
+        background-color:black;
+	    color:#bbb;
+}
+
+li{
+        padding:10px 0;
+        padding-left:25px;
+        word-wrap:break-word;
+}
+
+dt,li{
+        color:#bbb;
+}
+
+#msg dt{
+	border-bottom:2px solid black;
+}
+
+#article-news .date-label{
+
+        position:absolute;
+        right:10px;
+        padding:5px;
+}
+
+#product-news .date-label{
+        padding:5px;
+        margin-left:20px;
+}
+
+.order-label{
+        margin-right:5px;
+}
+
+#product-news{
+        position:absolute;
+	    top:20px;
+        right:10%;
+        width:290px;
+	    padding-left:30px;
+
+	    
+}
+
+/* footer */
+#footer-background,#footer{
+        width:100%;
+        height:100px;
+        z-index:-1;
+}
+
+#footer-background{
+        position:absolute;
+        top:940px;        
+        background-color:black;
+        border-top-style:solid;
+        border-top-width:4px;
+        border-top-color:gray;
+        opacity:0.2;
+        filter:alpha(opacity=20); /* 针对 IE8 以及更早的版本 */
+}
+
+#footer{
+        position:relative;
+        top:30px;
+}
+
+#footer p{
+        position:relative;
+        text-align:center;
+        color:black;
+        font-weight:bold;
+        font-size:15px;
+	    line-height:0;
+	    padding:50px 0;
+}
+
+/* articles */
+.modal-dialog{
+width:70%;
+}
+
+.modal-content{
+border-radius: 0;
+}
+
+.modal-header .date-label{
+        position:relative;
+        top:5px;
+}
+
+.btn{
+        background-color:black;
+        border:none;
+}
