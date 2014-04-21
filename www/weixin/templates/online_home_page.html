@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>点书|带着好心情读点书</title>
+<link href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" >
+<link href="http://cdn.bootcss.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+<link href="{{STATIC_URL}}css/home_page.css" rel="stylesheet">
+<style>
+body{
+        background-image:url({{STATIC_URL}}img/background.jpg);
+        background-size:cover;
+        background-attachment:fixed;
+        background-position:left center;
+}
+
+</style>
+</head>
+<body>
+<div id="background">
+</div>
+<div id="banner-background">
+</div>
+<div id="banner">
+<p id="product-name"><i class="icon-comments"></i>点书</p><p id="vertical-line">|</p><p id="slogan">带着好心情读点书</p>
+<p id="about" data-toggle="tooltip" data-placement="bottom" title="这只是一个好玩的微信公众号，到底有多好玩，我也不知道，呵,吧啦吧啦吧啦"><span class="glyphicon glyphicon-info-sign"></span> 关于点书</p>
+</div>
+<div id="content-background">
+</div>
+<div id="content">
+<div id="descriptions">
+<h2>点书：一个可以自助查询图书信息的公众号</h2>
+<dl>
+  <dt><h4><span class="glyphicon glyphicon-bookmark"></span> 功能介绍</h4></dt>
+  <dd>
+  <ol class="list-unstyled">
+    <li><h4><i class="icon-check"> 书评推送</i></h4></li>
+    <li><h4><i class="icon-check"> 好书推荐</i></h4></li>
+    <li><h4><i class="icon-check"> 图书查询</i></h4></li>
+    <li><h4><i class="icon-check"> 评论聚合</i></h4></li>
+  </ol>
+  </dd>
+</dl>
+<div id="user-count">
+<p>在这里，您可以与<span>159</span>位用户一起读书</p>
+</div>
+</div>
+<div id="bcode-img">
+<img src="{{STATIC_URL}}img/qrcode.jpg" alt="Oops~~~图片去哪了？">
+</div>
+</div>
+<div id="msg-background">
+</div>
+<div id="msg">
+<!-- article-news -->
+<div id="article-news">
+<dl>
+  <dt><h4><span class="glyphicon glyphicon-book"></span> 最新文章</h4></dt>
+  <dd>
+  <ol class="list-unstyled">
+    <li><span class="label label-default order-label">1</span><a ttt="test" href="#article-dialog" class="navbar-link"  data-toggle="modal">123122322312231223122312231232</a><span class="label label-default date-label">2014年3月15日 20:31</span></li>
+    <li><span class="label label-default order-label">2</span>1231232<span class="label label-default date-label">2014年3月15日 20:31</span></li>
+    <li><span class="label label-default order-label">3</span>1231qw232<span class="label label-default date-label">2014年3月15日 20:31</span></li>
+    <li><span class="label label-default order-label">4</span>1231232<span class="label label-default date-label">2014年3月15日 20:31</span></li>
+    <li><span class="label label-default order-label">5</span>123131232<span class="label label-default date-label">2014年3月15日 20:31</span></li>
+    <li><span class="label label-default order-label">6</span>123311232<span class="label label-default date-label">2014年3月15日 20:31</span></li>
+    <li><span class="label label-default order-label">7</span>1231232<span class="label label-default date-label">2014年3月15日 20:31</span></li>
+    <li><span class="label label-default order-label">8</span>1231232<span class="label label-default date-label">2014年3月15日 20:31</span></li>
+    <li><span class="label label-default order-label">9</span>1231232<span class="label label-default date-label">2014年3月15日 20:31</span></li>
+    <li><span class="label label-default order-label">10</span>1231222222222232<span class="label label-default date-label">2014年3月15日 20:31</span></li>
+</ol>
+  </dd>
+</dl>
+</div>
+<!-- product-news -->
+<div id="product-news">
+<dl>
+  <dt><h4><span class="glyphicon glyphicon-comment"></span> 最新消息</h4></dt>
+  <dd>
+  <ol class="list-unstyled">
+    <li>12312321231232123123222123112312321231233112123123311212312331212312331121231233112321231232123123212312322321221as22<span class="label label-default date-label">2014年3月15日</span></li>
+    <li>1231232<span class="label label-default date-label">2014年3月15日</span></li>
+    <li>1231232<span class="label label-default date-label">2014年3月15日</span></li>
+    <li>1231232<span class="label label-default date-label">2014年3月15日</span></li>
+    <li>1231232<span class="label label-default date-label">2014年3月15日</span></li>
+  </ol>
+  </dd>
+</dl>
+</div>
+</div>
+<div id="footer-background">
+</div>
+<div id="footer">
+<p>Copyright © 2014 dianshu. All Rights Reserved</p>
+</div>
+<!-- Button trigger modal -->
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#article-dialog">
+  Launch demo modal
+</button>
+<!-- Modal -->
+<div class="modal fade" id="article-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title"><strong>刘强东：迄今为止，京东还没有发现任何一个业绩很烂的人贪污</strong></h3>
+        <p class="label label-default date-label">2014年3月15日 20:31</p>
+      </div>
+      <div class="modal-body">
+        <p>
+        京东集团CEO刘强东近期在母校中国人民大学演讲，回顾了当年自己在人大读书的往事，包括怎么白手起家、从零创业。
+
+以下是从其演讲中摘录的他对于人性与管理、价值观与业绩的感悟，小标为虎嗅所加：
+
+1、为什么对员工这么好，他对你却不好？
+
+离开人民大学那天的时候，我是欠了家里面二十多万块钱，是负资产。但是就创业的人信念和激情一直没有消退，也抱着很多这种疑惑，也在思考着人到底性本善还是性本恶。
+
+就是为什么你对员工这么好，而他对你这么不好。你真的没有亏待他，不管他工资、住还是说吃，对他待遇等等等等，投入比以前所有的都好，可是以前每个人踏踏实实干活，老老实实干活，可是现在每一个人都不踏踏实实干活，都不好好干活，都在想捞自己的钱。
+
+带着这种疑惑就去了日本，叫日本来福。到了日本的企业，给我最大的教育是人不存在性本善、性本恶，一个企业没有管理，结果是必然的。你不能去埋怨员工，你不能说我对你这么好，我作为老板对你这么好，而你这么负我，你觉得他不对。其实我在日本其实一年多的时候，我就想了这个问题，实际上所有的结果都是我一个造成的，因为我没有真正的管理。
+
+2、给价值观匹配的人多两次机会
+
+京东十六年以来，有一个最重要的一个管理的表格。我们每个季度都会给公司所有的高管都会拿这个表格再次做一次回顾，一次考核，我们五万名员工每年每个员工都要做一次360度考核，用的最后也是这张表。
+
+我们把每个员工的特质分为两项，一项是能力，一项是价值观。能力当然好解释，我相信每个人都知道什么是能力，能力就是你做事情这种潜力或者能量大小或者你的绩效或者你的业绩等等。
+
+但重点是价值观，价值观确实是说一个思维层面，对于我们认为，我们认为价值观实际上是一个人对待他人，对待自然，还有包括人和人之间的看法，就是你怎么看待他人，怎么看待自己，怎么看待世界，这就是价值，大部分价值观是没有好和坏的，不存在好和坏，只存在匹配和不匹配，所以京东公司有我们自己的价值观，老实说任何一家公司的价值观实际上都是老板的价值观，特别一个创业企业，创业企业的文化一定是老板个人，创业企业的价值观一定是这个创始人的个人的价值观，二者永远是匹配的，从来没有发生过偏离，发生偏离的时候一定乱，企业文化会乱，造成公司的混乱，最后溃败。
+
+如果把这个纵轴当作能力、横轴当作价值观我们做一个匹配或者考核的话，0分到100分的话，你就发现这里面有五个区域，一个区域就是能力不行，价值观跟你也不匹配，价值观不存在好坏，实际上匹配度，这个得分度实际上一个匹配度，也就你匹配度越高，那么你能力就越高，能力越低呢匹配度也越低。
+
+价值观跟你匹配度很高，但是他能力一直不行，（怎么办？）在京东我们给两次机会，一次转岗，一次学习的机会，如果两次你能力绩效还是不能够提高的话，那么公司也面临一个生存的压力，公司也没办法继续，不是一个养老院，只能请他走人，就是两次机会转岗、学习培训的机会。
+
+3、钢与金子的比例
+
+一般来讲一个稳定的企业，正常稳定的企业钢的比例能占80%，它是符合自然界的二八规则的，然后金子很好理解，也就是能力很好，价值观跟你企业的价值观匹配度非常非常高，这一般得熟的、稳定的，我说稳定的，你初创团队或者后期团队都达不到的，可能占20%，就你的骨干或者叫核心。
+
+有很多初创公司，一路狂奔，然后培养了大量人才出来然后上市之后两天之后你发现好多公司员工走，一方面可能有钱了，原来大部分拿到期权了，他怎么想不愿意干活了有关系，但是其中还有很重要的原因，是这家公司的精英人物已经超过了20%，因为你企业的资源是有限的，你不能每个人都是高管，你不能每个员工都给很多股票，你也不能给每个员工都发两百万到三百万的高薪。
+
+你的资源有限，你挣的资源你只能倾向核心20%里面去，给他最好的现金待遇，把这些股票发给他们，给他们培训的机会，一旦超过20%之后，你企业资源不足以给他们，结果这20%其实很多人不满意的，他拿到股票不够多，拿到现金待遇不够多，其他福利也不够少，所以别人稍微多给他加点薪水他就走掉了，所以当金子的比例超过20%，不一定是好事。
+
+当低于20%也不是好事，你骨干力量不足，虽然大部分比如90%都是钢，说10%金子的话你会发现团队离职率特别高，你如果发现一个企业的离职率很高的时候，往往是这个团队的金子的比例不足造成的，因为离职率是跟管理的个人的魅力和领导力切切相关的。
+
+4、价值观风险不能冒
+
+每年老实说公司的内部都会有一些员工有贪污行为，每年都会有时候一个有时候两个被公司查到，或者被供货商、合作伙伴举报，然后查实开除。过去十几年一看的话，所有因为贪污的被公司开掉的往往都是业绩好的人，迄今为止京东还没有发现任何一个业绩很烂的人贪污，没有，就是这样。
+
+京东公司其实我们所有的价值观，核心用一个字来概括就是一个正字，我相信今天我们在座有很多人对京东有一定的了解，你比如产品，最早我们强调正品行货，然后你买什么东西你不要发票给你发票。说你能不能给我们便宜点，省点儿税钱，对不起，没有，京东不提供这项服务。
+
+我们公司的一个副总裁，三年前被开掉了，实际上就是拿了供应商的一个箱子。他们年薪是150万现金，每年拿到手。给他股票的话，我相信今年公司上市之后，他手里股票至少能值个六七千万人民币。
+
+可是大概就是三百块钱的一个箱子，供货商说箱子给你吧，他还是拿了，而且拿回家了，结果被别人举报，我们查实，然后把他开除了。可惜还是说价格不一致，因为他不认为这三百块钱是贪钱了，如果是30万，300万，可能觉得就不对了，但是三百块钱，我作为公司副总裁，供货商给我3百块钱一个箱子，只是一个箱子，不是给我钱。
+
+在他这种思维里面，在他的价值观念里面，他认为这不是一种贪官，是可以容忍的。但是他作为副总裁，他的下属拿着一个30块钱的，他觉得是正常，今天拿着30，明天是3万，这跟当时的餐厅是一样的，那样的话会导致企业的这种失败。
+
+我想有同学参加过京东面试，到最后要不要？能不能通过很重要一点，其中考核更多的是一种价值观，只要能够上过人大，其实没有说能力差到哪去，很少，能力是一个比一个强，但是到底能有多少跟京东匹配的，我们有各种各样筛选的方式、方法。
+
+所以对于学生来说，刚毕业学生的能力，根本没办法去考核，根本不知道你当年或者两年之后，你能力到底怎么样，也许两年之后，你业绩很好，也许两年之后，业绩很差。这其实对一个企业，作为一个刚毕业的大学生来讲，是必然冒的一个风险。可是价值观风险不能冒。所以我们所有的考试、考核大多数实际上都是指向价值观考核，是不是与我们京东相匹配。
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">关闭</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/jquery.pin/1.0.1/jquery.pin.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script>
+$('#bcode-img').pin();
+$('#about').tooltip();
+$('#article-dialog').on('shown.bs.modal', function (e) {
+    console.log(jQuery(e.relatedTarget).attr('ttt'));
+});
+</script>
+</body>
+</html>
