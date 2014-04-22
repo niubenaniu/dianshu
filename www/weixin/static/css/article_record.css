@@ -1,0 +1,31 @@
+@CHARSET "UTF-8";
+
+#article_record{
+        width:70%;
+        margin:auto;
+        padding-top:50px;
+}
+
+/* articles preview */
+.modal-dialog{
+width:70%;
+}
+
+.modal-content{
+border-radius: 0;
+}
+
+.modal-header .date-label{
+        position:relative;
+        top:5px;
+}
+
+#publish-button,#close-button{
+        background-color:black;
+        border:none;
+}
+
+.label{
+        background-color:black;
+        color:#bbb;
+}
