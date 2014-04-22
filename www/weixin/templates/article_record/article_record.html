@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>文章录入</title>
+<link href="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" >
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}CLEditor/jquery.cleditor.css" >
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/article_record.css" >
+</head>
+<body>
+<div id="article_record" class="alert alert-info">
+<form class="form-horizontal" role="form" action="../article_save/" method="POST">
+{%csrf_token%}
+<div class="form-group">
+<label for="title" class="col-sm-2 control-label">标题</label>
+<div class="col-sm-10">
+<input id="title" name="title" type="text" class="form-control"></input>
+</div>
+</div>
+<div class="form-group">
+<label for="author" class="col-sm-2 control-label">作者(选填)</label>
+<div class="col-sm-10">
+<input id="author" name="author" type="text" class="form-control" ></input>
+</div>
+</div>
+<div class="form-group">
+<div id="content-area">
+<label for="content" class="col-sm-2 control-label">正文</label>
+<div class="col-sm-10">
+<textarea id="content" name="content"></textarea>
+</div>
+</div>
+</div>
+<div class="form-group">
+<div class="col-sm-offset-2 col-sm-10">
+<button id="preview-button" class="btn btn-default">预览</button>
+<button id="publish-button" type="submit" class="btn btn-success">发布</button>
+</div>
+</div>
+</form>
+<!-- Modal -->
+<div class="modal fade" id="article-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title"><strong  id="preview-title"></strong></h3>
+        <p class="label label-default date-label"  id="preview-date"></p>
+      </div>
+      <div class="modal-body">
+        <p id="preview-content"></p>
+      </div>
+      <div class="modal-footer">
+        <button id="close-button" type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">关闭</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</div>
+<p style="text-align:center;">Copyright © 2014 dianshu. All Rights Reserved</p>
+<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}CLEditor/jquery.cleditor.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/article_record.js"></script>
+</body>
+</html>
