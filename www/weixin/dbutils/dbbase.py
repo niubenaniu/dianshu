@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-#-* coding:utf-8 -*-
+
 import logging
 import traceback
 import time
@@ -51,10 +51,10 @@ class DBHandler:
 
     def disconnect(self):
         self.commit()
-        if self._cursor not is None:
+        if self._cursor is not None:
             self._cursor.close()
             
-        if self._conn not is None:
+        if self._conn is not None:
             self._conn.close()
 
     def execute(self, sql, args=[]):
@@ -105,7 +105,7 @@ class DBHandler:
         pass
 
     def commit(self):
-        if self._cursor not is None:
+        if self._cursor is not None:
             self._cursor.commit()
 
     def rollback(self):

@@ -82,6 +82,10 @@ class generate_image():
         
         __im_canvas.save(__image)
         
+        # delete temp image fille
+        __tmp_image = self.__tmp_dir + self.__img_name
+        os.remove(__tmp_image)
+        
         return self.__img_name if os.path.exists(__image) else r'0000000.jpg'
             
     def get_image_url(self):

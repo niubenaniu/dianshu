@@ -32,10 +32,13 @@ class RequestService:
 #        _node_regex = '<dl[^>]+>.*?<dt[^>]+>.*?<a[^>]+>.*?<img.*?src=\\\\"([^"]+)"[^>]+>.*?<\\\\/a>.*?<\\\\/dt>.*?<dd[^>]+>.*?<p[^>]+>(.*?)<\\\\/p>.*?<ul[^>]+>.*?<\\\\/ul>.*?<dl[^>]+>.*?<\\\\/dl>.*?<p[^>]+>.*?<span>(.*?)<\\\\/span>.*?<a[^>]+>(.*?)<\\\\/a>.*?<a[^>]+>(.*?)<\\\\/a>'
         _node_regex = '<dl[^>]+>.*?<dt[^>]+>.*?<a[^>]+>.*?<img.*?src=\\\\"([^"]+)"[^>]+>.*?<\\\\/a>.*?<\\\\/dt>.*?<dd[^>]+>.*?<p[^>]+>.*?<a[^>]+>(.*?)<a[^>]+>.*?<\\\\/a>.*?<\\\\/a>.*?<em>(.*?)<\\\\/em>.*?<\\\\/p>.*?<ul[^>]+>.*?<\\\\/ul>.*?<dl[^>]+>.*?<\\\\/dl>.*?<p[^>]+>.*?<span>(.*?)<\\\\/span>.*?<a[^>]+>(.*?)<\\\\/a>.*?<a[^>]+>(.*?)<\\\\/a>'
         #_num_regex = '<a[^>]+>.*?<em[^>]+>.*<\\\\/em>(.*?)</a>.*<a[^>]>(.*?)<\\\\/a>.*?<a[^>]>(.*?)<\\\\/a>'
-        _num_regex = r'\\u8d5e<\\/em>\((\d*)\).*\\u8f6c\\u53d1\((\d*)\).*\\u8bc4\\u8bba\((\d*)\)'
+        _num_regex = [
+                      r'\\u8d5e<\\/em>\(?(\d*)\)?.*\\u8f6c\\u53d1\(?(\d*)\)?.*\\u8bc4\\u8bba\(?(\d*)\)?',
+                      r'\\\\u8d5e<\\\\/em>\(?(\d*)\)?.*\\\\u8f6c\\\\u53d1\(?(\d*)\)?.*\\\\u8bc4\\\\u8bba\(?(\d*)\)?',
+                      ]
         _num_map = {1: 'praises', 2: 'retweets', 3: 'reviews'}
         _ret = []
-        
+
         for _node in re.findall(_regex, _x):
             for _nd in re.findall(_node_regex, _node):
                 _temp = {}
@@ -45,15 +48,21 @@ class RequestService:
                 _temp['num'] = {}
                 _idx = 0
                 # modified by niuben at 2014-03-19
-                m = re.search(_num_regex, _nd[3])
-                try:
-                    for _num in (m.group(1),m.group(2),m.group(3)):
-                        _idx += 1
-                        _t = _num_map.get(_idx)
-                        if _t is not None:
-                            _temp['num'][_t] = _num
-                except:
-                    pass
+                m = re.search(_num_regex[0], _nd[3])
+
+                if (m is None):
+                    m = re.search(_num_regex[1], _nd[3])
+
+                if (m is not None):
+                    _num_list = [m.group(1),m.group(2),m.group(3)]
+                else:
+                    _num_list = [0,0,0]
+                
+                for _num in _num_list:
+                    _idx += 1
+                    _t = _num_map.get(_idx)
+                    if _t is not None:
+                        _temp['num'][_t] = _num
                 _temp['time'] = _nd[4]
                 _temp['from'] = _nd[5]
                 _ret.append(_temp)
@@ -75,5 +84,5 @@ class RequestService:
 if __name__ == '__main__':
     log.initlog('', True)
     rs = RequestService()
-    print rs.search_comment('百年孤独')
+    rs.search_comment('百年孤独')
     
