@@ -13,7 +13,10 @@ import pycurl
 import cStringIO
 import re
 
-from api_douban.service import RequestService
+from api_douban.service import RequestService as RequestService_douban
+from api_sina.service import RequestService as RequestService_sina
+#from api_tencent.service import RequestService as RequestService_tencent
+from api_renren.service import RequestService as RequestService_renren
 from generate_img.generate_img import generate_image
 
 TOKEN = 'dianshu_weinxin'
@@ -223,7 +226,7 @@ def get_book_message(request,book_name):
     '''
     get book message from douban api
     '''
-    rapi = RequestService()
+    rapi = RequestService_douban()
     book_message_dict = {}
     book_message_for_xml = {}
 
@@ -272,10 +275,11 @@ def details_page(request,book_isbn):
     #print request.META['HTTP_USER_AGENT']
     
     # get book messages by book id(ISBN)
-    rapi = RequestService()
+    rapi = RequestService_douban()
     book_message = rapi.search_book_by_isbn(book_isbn)
     book_id = book_message['id']
     request.session['book_id'] = book_id
+    request.session['book_title'] = book_message['title']
 
     c = {
          # get book_message from douban API
@@ -295,19 +299,43 @@ def details_page(request,book_isbn):
     
     return render_to_response('details_page.html',c)
 
+def get_ratings(request):
+    '''
+        get book ratings via spider
+    '''
+    book_id = request.session['book_id']
+    
+    rapi = RequestService_douban()
+    ratings = rapi.get_ratings(book_id)
+
+    return HttpResponse(ratings,content_type='application/javascript')
+
 def get_book_reviews_by_offset(request,is_offset=0):
     '''
         get book reviews by offset via use Ajax method
-    '''    
+    '''
+    reviews_source = request.GET.get('source')
+        
+    if reviews_source == 'douban':
+        return get_book_reviews_by_offset_douban(request,is_offset)
+    elif reviews_source == 'sina':
+        return get_book_reviews_by_offset_sina(request,is_offset)
+    elif reviews_source == 'tencent':
+        return get_book_reviews_by_offset_tencent(request,is_offset)
+    elif reviews_source == 'renren':
+        return get_book_reviews_by_offset_renren(request,is_offset)
+    
+def get_book_reviews_by_offset_douban(request,is_offset=0):
+    
     if not is_offset:
-        request.session['next_offset'] = 0
+        request.session['next_offset_douban'] = 1
     else:
-        request.session['next_offset'] += 5    
+        request.session['next_offset_douban'] += 5    
 
     book_id = request.session['book_id']
 
-    rapi = RequestService()
-    book_reviews = rapi.get_book_reviews(book_id.encode('utf-8'))
+    rapi = RequestService_douban()
+    book_reviews = rapi.get_book_reviews(book_id.encode('utf-8'),offset=request.session['next_offset_douban'])
     
     reviews = []
     reg_exp = re.compile(r'(\d+\-\d+\-\d+).*?(\d+\:\d+)\:')
@@ -316,34 +344,89 @@ def get_book_reviews_by_offset(request,is_offset=0):
         
         reg_result = reg_exp.match(book_review['published']['texts'])
         published = reg_result.group(1) + '  ' + reg_result.group(2)
-        
-        author_image = book_review['author']['link'][2]['href'].replace(r'/u',r'/ul')
-        
+
+        author_image = book_review['author']['link'][2]['href']#.replace(r'/u',r'/ul')
+ 
         review = {
                   'author_image' : author_image,
                   'author_name' : book_review['author']['name']['texts'],
                   'title' : book_review['title']['texts'],
-                  'rating' : book_review['rating']['value'],
+                  # 用户可能没有星评，所以给个默认值5
+                  'rating' : (book_review['rating']['value'] if book_review.has_key('rating') else 5),
                   'published' : published,
                   'summary' : book_review['summary']['texts'],
-                  # 默认头像链接为http://img3.douban.com/icon/uxxx,大图为http://img3.douban.com/icon/ulxxx。
+                  # 默认头像链接为http://img3.douban.com/icon/uxxx,大图为http://img3.douban.com/icon/ulxxx
                   'link' : book_review['link'][1]['href'],
                   'votes' : book_review['votes']['value'],
                   'useless' : book_review['useless']['value'],                 
                   }
         
         reviews.append(review)
-    print reviews
     
     c = {
          'reviews':reviews,
          }
     
-    return render_to_response('book_reviews.html',c)
+    return render_to_response('book_reviews_douban.html',c)
+
+def get_book_reviews_by_offset_sina(request,is_offset):
     
-def test_page(request):
+    rapi = RequestService_sina()
+    keyword = unicode(request.session['book_title']).encode('utf-8')
+    book_reviews = rapi.search_comment(keyword)
     
-    return render_to_response('test_page.html')
+    reviews = []
+
+    for book_review in book_reviews:
+        review = {
+                  'image':book_review['img'],#.decode('unicode-escape'),
+                  'user':book_review['user'].decode('unicode-escape'),
+                  # 时间比较新，所以微博的数据实时性还是很高的。
+                  'time':book_review['time'].decode('unicode-escape'),
+                  'comment':book_review['comment'].decode('unicode-escape'),
+                  'judge':book_review['num'],
+                  }
+        
+        reviews.append(review)
+    
+    c = {
+         'reviews':reviews,
+         }
+    
+    return render_to_response('book_reviews_sina.html',c)
+
+def get_book_reviews_by_offset_tencent(request,is_offset):
+
+    return HttpResponse('<div class="list-group-item">tencent</div>')
+
+def get_book_reviews_by_offset_renren(request,is_offset):
+
+    rapi = RequestService_renren()
+    keyword = unicode(request.session['book_title']).encode('utf-8')
+    book_reviews = rapi.search_comment(keyword)
+
+    reviews = []
+
+    for book_review in book_reviews:
+        review = {
+                  'image':book_review['img'],
+                  'user':book_review['user'],
+                  # 有比较久远的时间，所以人人的数据实时性不是很高。
+                  'time':book_review['time'],
+                  'comment':book_review['comment'],
+                  }
+        
+        reviews.append(review)
+
+    c = {
+         'reviews':reviews,
+         }
+
+    return render_to_response('book_reviews_renren.html',c)
+
+'''def test_page(request):
+    
+    return render_to_response('test_page.html')'''
 
 def get_old_article():
     '''
@@ -368,4 +451,41 @@ def history_article_details(request):
 
 def article_record(request):
     
-    return render_to_response('article_record.html')
+    return render_to_response('article_record/article_record.html',context_instance=RequestContext(request))
+
+def article_save(request):
+    '''
+        save article which be sent from article_record page
+    '''
+    #import time
+    #now = time.strftime('%Y-%m-%d %H:%M')
+    c={}
+    try:
+        from models import Article
+        article = Article(title=request.POST.get('title'),author=request.POST.get('author'),\
+                    content=request.POST.get('content'))
+        article.save()
+        
+        a = Article.objects.all().order_by("-publish_date")[0:9]
+        #for i in a:
+        #    print i.publish_date
+        
+        c = {
+             'result':'保存成功！',
+             'return_code':0,
+        }
+        
+    except:
+        c = {
+             'result':'Oops！！！好像出了点差错！点书正在努力反省中~~~',
+             'return_code':1,
+        }
+        
+        return render_to_response('article_record/article_save.html',c)
+
+    return render_to_response('article_record/article_save.html',c)
+
+# home page
+def online_home_page(request):
+    
+    return render_to_response('online_home_page.html',context_instance=RequestContext(request))
