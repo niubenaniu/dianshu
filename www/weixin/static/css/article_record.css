@@ -1,5 +1,9 @@
 @CHARSET "UTF-8";
 
+.alert-info{
+        color:black;	
+}
+
 #article_record{
         width:70%;
         margin:auto;
