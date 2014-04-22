@@ -1,6 +1,7 @@
 # -*- coding:UTF-8 -*-
 
-# createed by niuben at 2013-12-09
+# created by niuben at 2013-12-09
+
 from django.shortcuts import render_to_response,render,RequestContext
 from django.http import StreamingHttpResponse,HttpResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
@@ -12,12 +13,15 @@ import os
 import pycurl
 import cStringIO
 import re
+import simplejson
 
 from api_douban.service import RequestService as RequestService_douban
 from api_sina.service import RequestService as RequestService_sina
 #from api_tencent.service import RequestService as RequestService_tencent
 from api_renren.service import RequestService as RequestService_renren
 from generate_img.generate_img import generate_image
+
+from models import Article
 
 TOKEN = 'dianshu_weinxin'
 
@@ -182,13 +186,6 @@ def generate_news_reply_xml(request,context):
     title = book_message_for_xml['title']
     description = book_message_for_xml['description']
 
-    rating = '''
-很棒：☆☆☆☆☆  81%
-不错：☆☆☆☆      7%
-凑合：☆☆☆         4%
-不好：☆☆             3%
-烂书：☆                3%
-    '''
     picture_url_douban = book_message_for_xml['picture_url']
     
     gi = generate_image(picture_url_douban)
@@ -461,14 +458,9 @@ def article_save(request):
     #now = time.strftime('%Y-%m-%d %H:%M')
     c={}
     try:
-        from models import Article
         article = Article(title=request.POST.get('title'),author=request.POST.get('author'),\
                     content=request.POST.get('content'))
         article.save()
-        
-        a = Article.objects.all().order_by("-publish_date")[0:9]
-        #for i in a:
-        #    print i.publish_date
         
         c = {
              'result':'保存成功！',
@@ -487,5 +479,27 @@ def article_save(request):
 
 # home page
 def online_home_page(request):
+    '''
+        home web page
+    '''
+    article_list = Article.objects.all().order_by("-publish_date")[0:10]
+    #article_list = Article.objects.raw('select id,title,publish_date from weixin_article limit 10')
     
-    return render_to_response('online_home_page.html',context_instance=RequestContext(request))
+    c = {
+         'article_list':article_list,
+    }
+    
+    return render_to_response('online_home_page.html',c,context_instance=RequestContext(request))
+
+def get_article_by_id(request,article_id):
+    
+    article = Article.objects.get(id=article_id)
+
+    c = {
+         'title':article.title,
+         'publish_date':article.publish_date.strftime('%Y年%m月%d日 %H:%M'),
+         'content':article.content,
+    }
+    
+    return HttpResponse(simplejson.dumps(c))
+    

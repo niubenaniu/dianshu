@@ -13,6 +13,7 @@ urlpatterns = patterns('weixin.views',
 
 urlpatterns += patterns('weixin.views',
     url(r'^home/$', 'online_home_page'),
+    url(r'^get_article_by_id/(?P<article_id>\d+)$', 'get_article_by_id'),
 )
 
 urlpatterns += patterns('weixin.views',
