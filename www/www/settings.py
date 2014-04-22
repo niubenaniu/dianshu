@@ -54,7 +54,6 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 
 SESSION_FILE_PATH = '/tmp'
 
-
 ROOT_URLCONF = 'www.urls'
 
 WSGI_APPLICATION = 'www.wsgi.application'
@@ -75,7 +74,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
