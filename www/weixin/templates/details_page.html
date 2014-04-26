@@ -81,10 +81,6 @@ article.node > section.content {
   font-size:400%;
 }
 
-span.ratings_text {
-	font-size:400%;
-}
-
 .sprogress {
   position:relative;
   top: -68px;
@@ -331,6 +327,10 @@ function chart_pie(data) {
                     enabled: true,
                     color: '#000000',
                     connectorColor: '#000000',
+                    style: {
+                    	fontSize : '400%',
+                    	fontWeight: 'bold'
+                    },
                     format: '<span class="ratings_text"><b>{point.name}: </b>{point.percentage:.1f} %</span>'
                 }
             }
