@@ -21,8 +21,6 @@ from api_sina.service import RequestService as RequestService_sina
 from api_renren.service import RequestService as RequestService_renren
 from generate_img.generate_img import generate_image
 
-from models import Article
-
 TOKEN = 'dianshu_weinxin'
 
 @csrf_exempt
@@ -96,7 +94,11 @@ def auto_reply_service(request):
     elif message_type == 'event':
         event_type = root.find('Event').text
         if event_type == 'subscribe':
+            user_subscribe(form_user_name)
             reply_xml = generate_text_reply_xml(request,context,type='greet')
+        elif event_type == 'unsubscribe':
+            user_unsubscribe(form_user_name)
+            
     else:
         reply_xml = generate_text_reply_xml(request,context)
     
@@ -115,7 +117,7 @@ def generate_text_reply_xml(request,context,type='adjust'):
     '''
 
     message_type = 'text'
-    
+        
     if type == 'greet' or type == 'help':
         content = '''
 欢迎关注《点书》[微笑]
@@ -131,7 +133,7 @@ def generate_text_reply_xml(request,context,type='adjust'):
 回复“h”
 -------调戏主人[坏笑]----
 微信：Benforward
-    '''   
+    '''
     elif type == 'history':
         content = get_old_article()
     else:    
@@ -294,7 +296,7 @@ def details_page(request,book_isbn):
          'rating_details':1,
          }
     
-    return render_to_response('details_page.html',c)
+    return render_to_response('details_page.html',c,context_instance=RequestContext(request))
 
 def get_ratings(request):
     '''
@@ -364,7 +366,7 @@ def get_book_reviews_by_offset_douban(request,is_offset=0):
          'reviews':reviews,
          }
     
-    return render_to_response('book_reviews_douban.html',c)
+    return render_to_response('third_party_content/book_reviews_douban.html',c)
 
 def get_book_reviews_by_offset_sina(request,is_offset):
     
@@ -390,7 +392,7 @@ def get_book_reviews_by_offset_sina(request,is_offset):
          'reviews':reviews,
          }
     
-    return render_to_response('book_reviews_sina.html',c)
+    return render_to_response('third_party_content/book_reviews_sina.html',c)
 
 def get_book_reviews_by_offset_tencent(request,is_offset):
 
@@ -419,7 +421,7 @@ def get_book_reviews_by_offset_renren(request,is_offset):
          'reviews':reviews,
          }
 
-    return render_to_response('book_reviews_renren.html',c)
+    return render_to_response('third_party_content/book_reviews_renren.html',c)
 
 '''def test_page(request):
     
@@ -446,60 +448,29 @@ def history_article_details(request):
     '''
     return render_to_response('history_list_page.html')
 
-def article_record(request):
-    
-    return render_to_response('article_record/article_record.html',context_instance=RequestContext(request))
+def user_subscribe(open_id):
+    '''
+        save user which subscribe
+    '''
 
-def article_save(request):
-    '''
-        save article which be sent from article_record page
-    '''
-    #import time
-    #now = time.strftime('%Y-%m-%d %H:%M')
-    c={}
-    try:
-        article = Article(title=request.POST.get('title'),author=request.POST.get('author'),\
-                    content=request.POST.get('content'))
+    try:    
+        article = User(open_id=open_id)
         article.save()
-        
-        c = {
-             'result':'保存成功！',
-             'return_code':0,
-        }
-        
     except:
-        c = {
-             'result':'Oops！！！好像出了点差错！点书正在努力反省中~~~',
-             'return_code':1,
-        }
-        
-        return render_to_response('article_record/article_save.html',c)
+        return 'failed'
 
-    return render_to_response('article_record/article_save.html',c)
+    return 'success'
 
-# home page
-def online_home_page(request):
+def user_unsubscribe(open_id):
     '''
-        home web page
+        remove user which unsubscribe
     '''
-    article_list = Article.objects.all().order_by("-publish_date")[0:10]
-    #article_list = Article.objects.raw('select id,title,publish_date from weixin_article limit 10')
-    
-    c = {
-         'article_list':article_list,
-    }
-    
-    return render_to_response('online_home_page.html',c,context_instance=RequestContext(request))
 
-def get_article_by_id(request,article_id):
-    
-    article = Article.objects.get(id=article_id)
+    try:    
+        user = User.objects.get(open_id=open_id)
+        if user:
+            user.delete()
+    except:
+        return 'failed'
 
-    c = {
-         'title':article.title,
-         'publish_date':article.publish_date.strftime('%Y年%m月%d日 %H:%M'),
-         'content':article.content,
-    }
-    
-    return HttpResponse(simplejson.dumps(c))
-    
+    return 'success'

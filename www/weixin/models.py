@@ -11,3 +11,9 @@ class Article(models.Model):
     def __unicode__(self):
         return self.title
         
+class User(models.Model):
+    open_id = models.CharField(max_length=100)
+    subscribe_date = models.DateTimeField(auto_now_add=True)
+    
+    def __unicode__(self):
+        return self.open_id
