@@ -61,7 +61,7 @@ def online_home_page(request):
 
 def get_article_by_offset(request,offset):
     
-    index_start = int(offset) - 1
+    index_start = (int(offset) - 1) * 10;
     index_end = index_start + 10
     
     article_obj = Article.objects.all()
@@ -84,7 +84,7 @@ def get_article_by_offset(request,offset):
         
     article_json = {
          'article_count':article_count,
-         'articles_list':article_dict,
+         'article_list':article_dict,
          }
     
     return HttpResponse(simplejson.dumps(article_json))

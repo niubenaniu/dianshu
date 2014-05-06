@@ -6,7 +6,7 @@ jq('#article-dialog').on('show.bs.modal', function (e) {
 	var url = '../get_article_by_id/' + jq(e.relatedTarget).attr('article-id');
     
 	jq.getJSON(url,function(article){
-        	jq('#article-title').html(article.title);        	
+        	jq('#article-title').html(article.title);
         	jq('#publish-date').html(article.publish_date);
         	jq('#article-content').html(article.content);
     });
@@ -56,26 +56,56 @@ if (SpeechRecognition) {
 
 jq(function () {
 	
-	var url = '../get_article_by_offset/2'
+	var url = '../get_article_by_offset/1';
     
 	jq.getJSON(url,function(article_list){
+		
     var page_count = Math.ceil(article_list.article_count / 10);
     generate_paging(page_count);
+
+    jq("#article-pagination a").click(function(e){
+        get_article_by_offset(jq(e.target).text());
+    });
+    
     });
 	
 });
 
+function get_article_by_offset(offset){
+	
+	var url = '../get_article_by_offset/' + offset;
+	    
+	jq.getJSON(url,function(article_list){
+		
+    var articles = article_list.article_list;
+    jq("#article-list").empty();
+    for(i in articles){
+        var j = parseInt(i) + 1;
+        html_li = '<li>';
+        html_li += '<span class="label label-default order-label">' + j + '</span>';
+        if(offset==1 && j==1){
+            html_li += '<a article-id="' + articles[i]['id'] + '" href="#article-dialog" class="navbar-link"  data-toggle="modal">' + articles[i]['title'] + '<span class="badge badge-new">new</span></a>';
+        }else{
+            html_li += '<a article-id="' + articles[i]['id'] + '" href="#article-dialog" class="navbar-link"  data-toggle="modal">' + articles[i]['title'] + '</a>';
+        }
+        html_li += '<span class="label label-default date-label">' + articles[i]['publish_date'] + '</span>';
+        html_li += '</li>';
+        jq("#article-list").append(html_li);
+    }
+    });
+}
+
 function generate_paging(page_count){
 
 	if(page_count > 1){
-		paging_html = '<ul class="pagination pagination-sm">';
-		paging_html += '<li><a href="#"><i class="icon-backward"></i></a></li>';
+		paging_html = '<ul class="pagination pagination-sm" id="article-pagination">';
+		paging_html += '<li><a href="javascript:void(0);"><i class="icon-backward"></i></a></li>';
 		
 		for(i=1;i<=page_count;i++){
-			paging_html += '<li><a href="#">' + i + '</a></li>';
+			paging_html += '<li><a href="javascript:void(0);">' + i + '</a></li>';
 		}
 		
-		paging_html += '<li><a href="#"><i class="icon-forward"></i></a></li>';
+		paging_html += '<li><a href="javascript:void(0);"><i class="icon-forward"></i></a></li>';
 		paging_html += '</ul>';
 		
 		jq("#article-news").append(paging_html);

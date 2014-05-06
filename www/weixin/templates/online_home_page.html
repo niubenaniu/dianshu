@@ -55,12 +55,12 @@
 <dl>
   <dt><h4><span class="glyphicon glyphicon-book"></span> 最新文章</h4></dt>
   <dd>
-  <ol class="list-unstyled">
+  <ol class="list-unstyled" id="article-list">
   {% for article in article_list %}
     <li>
     <span class="label label-default order-label">{{forloop.counter}}</span>
     {% ifequal forloop.counter 1 %}
-    <a article-id="{{article.id}}" href="#article-dialog" class="navbar-link"  data-toggle="modal">{{article.title}} <span class="badge badge-new">new</span></a>
+    <a article-id="{{article.id}}" href="#article-dialog" class="navbar-link"  data-toggle="modal">{{article.title}}<span class="badge badge-new">new</span></a>
     {% else %}
     <a article-id="{{article.id}}" href="#article-dialog" class="navbar-link"  data-toggle="modal">{{article.title}}</a>
     {% endifequal %}
