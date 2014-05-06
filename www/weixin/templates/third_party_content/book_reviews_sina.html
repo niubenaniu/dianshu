@@ -1,0 +1,25 @@
+{% for review in reviews %}
+<div class="list-group-item">      
+  <table class="comment">
+    <tr>
+      <td style="width:20%">
+      <img class="userpic img-circle" src="{{review.image}}"/>
+      <div class="username">{{review.user}}</div>
+	  </td>
+	  <td style="width:80%">              
+        <article>
+          <header>
+            <div>{{review.time}}</div>
+          </header>
+          <section>
+          {{review.comment}}
+          </section>
+          <footer>
+            <span>赞({% if review.judgse.praises %}{{review.judge.praises}}{% else %}0{% endif %})|转发({% if review.judge.retweets %}{{review.judge.retweets}}{% else %}0{% endif %})|评论({% if review.judge.reviews %}{{review.judge.reviews}}{% else %}0{% endif %})</span>
+          </footer>
+        </article>
+      </td>
+    </tr>
+  </table>
+</div>
+{% endfor %}

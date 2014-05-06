@@ -1,0 +1,159 @@
+@CHARSET "UTF-8";
+div.main{
+  width:100%;
+  height:500px;
+}
+div.clear {
+  clear:both;
+}
+aside.img {
+  padding:5px 5px 5px 0px;
+  width:auto;
+  height:100%;
+  float:left;
+}
+
+aside.img > img{
+    width:300px;
+}
+
+section.basic {
+  padding;5px;
+  height:100%;
+  width:auto;
+  float:left;
+}
+
+section.book > div {
+  width: 100%;
+  font-size:300%;
+  padding:5px 8px 0px 8px;
+}
+
+section.book > .name{
+  font-size:800%;
+  color:blue;
+}
+
+section.book > .buy{
+  font-size:600%;
+  margin-top:8px;
+  color:gray;
+}
+
+article.node {
+  width:100%;
+  height:auto;
+}
+
+article.node > div.title {
+  margin:8px 2px 8px 2px;
+  border-bottom: 5px solid #aaa;
+}
+
+article.node > div.title > div.name {
+  border-radius:0.25em 0.25em 0em 0em;
+  position: relative;
+  top: 0px;
+  font-size: 450%;
+  background-color: #1c70ed;
+  width: 30%;
+  height: 15%;
+  vertical-align: middle;
+  text-align: center;
+  color:white;
+}
+
+article.node > section.content {
+  position: relative;
+  padding: 8px;
+  left: 0px;
+  width: 100%;
+  height: auto;
+  top: 15px;
+  font-size:400%;
+}
+
+.sprogress {
+  position:relative;
+  top: -68px;
+  left:35%;
+  width:50%;
+  margin:0px;
+  background-color: white;
+  font-size:70%;
+  font-weight: bolder;
+  height:50px;
+}
+
+
+.sprogress-bar {
+  background-color: #1c70ed;
+}
+
+.sbadge {
+  position:relative;
+  font-size:80%;
+  top:-35px;
+  left:-15px;
+  border: 5px solid #ffffff;
+}
+
+.slabel{
+  height:105px;
+  display: inline-block;
+}
+
+.cmn_btn {
+  border: 1px solid black;
+  background: white;
+  color: black;
+  padding: 0px;
+  margin:0px;
+  cursor: pointer;
+  font-size:80%;
+}
+
+div.spgs {
+  width:100%;
+  height:50px;
+}
+
+table.comment, table.comment tr, table.comment td {
+  padding:0px;
+  margin:0px;
+  border:0;
+}
+
+table.comment td {
+  vertical-align:middle;
+}
+
+table.comment img.userpic {
+  max-width:100%;
+  width:200px;
+  height:200px;
+}
+
+table.comment div.username {
+  font-size:100%;
+  text-align:center;
+  padding-top:8px;
+}
+
+
+table.comment article {
+  padding-left:10px;
+}
+
+table.comment article header {
+
+}
+
+table.comment article section {
+
+}
+
+table.comment article footer {
+  float:right;
+}

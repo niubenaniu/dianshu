@@ -1,0 +1,82 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+<title>{{name}}_点书</title>
+{% endblock %}
+
+{% block css %}
+<link href="{{STATIC_URL}}css/online_search_page.css" rel="stylesheet">
+<style>
+
+#content{
+	position:relative;
+	width:55%;
+	left:10%;
+	padding:20px 0;
+
+}
+
+#right-bar{
+	position:absolute;
+    width:260px;
+    height:1000px;
+	top:60px;
+    right:10%;
+	background-color:#eee;
+}
+
+#cover{
+	width:120px;
+	height:160px;
+}
+
+#book li{
+	padding:10px 0;
+	margin:0;
+	border-top:1px dashed #ccc;
+	color:#555;
+}
+
+#book h4{
+    color:#69c;
+}
+
+#book span{
+    color:#ccc;
+}
+
+#search-more{
+	text-align:center;
+	color:#555;
+}
+
+#search-more a:hover{
+    text-decoration:none;
+    cursor:pointer;
+}
+
+#search-results a:hover{
+    text-decoration:none;
+    cursor:pointer;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+<div id="book">
+<ul class="media-list" id="search-results">
+</ul>
+<p id="search-more"><a> 查看更多...</a></p>
+</div>
+</div>
+<div id="right-bar">
+<p>最近搜索</p>
+<p>最近查看</p>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="{{STATIC_URL}}js/online_search_page.js"></script>
+{% endblock %}

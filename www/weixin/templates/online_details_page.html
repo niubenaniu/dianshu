@@ -1,0 +1,144 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+<title>{{title}}_点书</title>
+{% endblock %}
+
+{% block css %}
+<link href="{{STATIC_URL}}css/online_details_page.css" rel="stylesheet">
+<style>
+#book-messages{
+        width:80%;
+        height:440px;
+        margin:auto;
+        padding:20px 0;
+        background-color:#eee;
+}
+
+#book-messages div{
+        float:left;
+}
+
+#cover{
+        margin-right:20px;
+}
+
+#messages{
+        background-color:white;
+        padding:0 20px;
+        max-width:35%;
+        word-wrap:break-word;
+}
+
+#messages span{
+        color:#aaa;
+}
+
+#messages h2{
+        margin-top:10px;
+        color:#428bca;
+}
+
+#tags{
+        position:absolute;
+        right:10%;
+        width:260px;
+        height:400px;
+        background-color:white;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- book messages -->
+<div id="book-messages">
+<div id="cover">
+<img style="width:300px;height:400px;" src="{{cover}}" alt="封面不存在">
+</div>
+<div id="messages">
+<h2>{{title}}</h2>
+<h4><span>作者：</span>{{author.0}}</h4>
+<h4><span>出版社：</span>{{publisher}}<h4>
+<h4><span>出版年：</span>{{publisher}}<h4>
+<h4><span>页数：</span>{{publisher}}<h4>
+<h4><span>定价：</span>{{price}}</h4>
+</div>
+<div id="tags">
+</div>
+</div>
+
+<!-- tags -->
+<article class="node">
+<div class="title">
+<div class="name"><span class="icon-tags"></span> 标签</div>
+</div>
+<section class="content">
+{% for tag in tags %}
+<span class="slabel"><span class="label label-default">{{tag.name}}</span><span class="badge sbadge">{{tag.count}}</span></span>
+{% endfor %}
+</section>
+</article>
+
+<!-- judges -->
+<article class="node">
+<div class="title">
+<div class="name"><span class="icon-bar-chart"></span> 评价</div>
+</div>
+<section class="content">
+<div id="ratings" style="display:none"><span id="stars"></span> {{rating.average}}(已有{{rating.numRaters}}人评价)</div>
+<div id="rating_value" style="display:none">{{rating.average}}</div>
+<div id="container" style="min-width:800px;height:400px"></div>
+</section>
+</article>
+
+<!-- comments -->
+<article class="node">
+<div class="title">
+<div class="name"><span class="icon-comments"></span> 评论</div>
+</div>
+<section class="content">
+<ul id="reviewsTab" class="nav nav-tabs">
+  <li><a id="douban-tab" href="#douban" data-toggle="tab">豆瓣读书</a></li>
+  <!--
+  <li><a id="sina-tab" href="#sina" data-toggle="tab">新浪微博</a></li> 
+  <li><a id="tencent-tab" href="#tencent" data-toggle="tab">腾讯微博</a></li>
+  <li><a id="renren-tab" href="#renren" data-toggle="tab">人人网</a></li>
+   -->
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade in active" id="douban">
+      <div class="list-group" id="douban-list-group">
+      <!-- generate content via Ajax -->
+      </div>
+      <p id="more-reviews-douban">显示更多评论</p>
+    </div>
+    <div class="tab-pane fade" id="sina">
+      <div class="list-group" id="sina-list-group">
+      <!-- generate content via Ajax -->
+      </div>
+      <p id="more-reviews-sina">显示更多评论</p>
+    </div>
+<!--     <div class="tab-pane fade" id="tencent">
+      <div class="list-group" id="tencent-list-group">
+      generate content via Ajax
+      </div>
+      <p id="more-reviews-tencent">显示更多评论</p>
+    </div> -->
+    <div class="tab-pane fade" id="renren">
+      <div class="list-group" id="renren-list-group">
+      <!-- generate content via Ajax -->
+      </div>
+      <p id="more-reviews-renren">显示更多评论</p>
+    </div>
+</div>
+</section>
+</article>
+<div class="coffee coffee2"> </div>
+{% endblock %}
+
+{% block javascript %}
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="{{STATIC_URL}}js/details_page.js"></script>
+<script src="{{STATIC_URL}}js/online_details_page.js"></script>
+{% endblock %}

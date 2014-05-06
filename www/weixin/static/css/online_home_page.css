@@ -1,0 +1,261 @@
+@CHARSET "UTF-8";
+p{
+	    color:#555;
+}
+
+/* content */
+#content-background,#content{
+        width:100%;
+        height:320px;
+}
+
+#content-background{
+        position:absolute;
+        top:60px;
+        background-color:black;/*rgba(0,0,0,0.75);*/
+        opacity:0.9;
+        filter:alpha(opacity=90); /* 针对 IE8 以及更早的版本 */
+}
+
+#content{
+        position:relative;
+	    padding:30px 0;
+	    border-bottom-style:solid;
+        border-bottom-width:0px;
+        border-bottom-color:gray;
+}
+
+#content div{
+	    float:left;
+}
+
+#descriptions{
+        position:relative;
+        left:10%;
+        width:325px;
+	    height:100%;
+        color:#ccc;
+	    border-right:1px dashed gray;
+	    /*background-color:white;
+        opacity:0.6;
+        filter:alpha(opacity=60);*/ /* 针对 IE8 以及更早的版本 */
+	    text-align:right;
+	    padding:10px;
+}
+
+#descriptions h3,h5{
+        margin:0;
+	    line-height:1.5;
+}
+
+h3#question{
+	    margin:20px;
+	    color:#69c;
+}
+
+#user-count{
+	    position:relative;
+	    left:122px;
+	    top:90px;
+}
+
+#user-count p{  
+	    float:left;
+	    line-height:80px;
+	    font-size:25px;
+}
+
+#count-description{
+	    color:gray;
+	    padding-left:10px;
+}
+
+#bcode-img{
+        position:absolute;
+        top:90px;
+        right:10%;
+	    z-index:0;
+}
+
+.pin-wrapper{
+	
+	top:-260px;
+}
+
+/* msg */
+#msg-background,#msg{
+        width:100%;
+        height:530px;
+}
+
+#msg-background{
+        position:absolute;
+        top:380px;
+        background-color:black;
+        opacity:0.8;
+        filter:alpha(opacity=80); /* 针对 IE8 以及更早的版本 */
+}
+
+#msg{
+        position:relative;
+	    top:-10px;
+}
+
+#article-news,#product-news{
+	    height:470px;
+}
+
+#article-news{
+        position:relative;
+        left:10%;
+        width:55%;
+        top:30px;
+}
+
+#article-news .date-label{
+        position:absolute;
+        right:10px;
+        padding:5px;
+}
+
+#article-news dl{
+	    margin-bottom:0;	
+}
+
+#article-news ol{
+	    margin-bottom:10px;	
+}
+
+#article-news>dl li{
+	    border-bottom:1px dashed black;
+}
+
+#article-news>dl a:hover{
+	    color:#69c;
+	    text-decoration:none;
+}
+
+.navbar-link{
+	    color:#ccc;
+}
+
+.pagination{
+	    margin:0;
+	    margin-left:58px;
+}
+
+.pagination>li>a{
+        background-color:black;
+	    color:#ccc;
+		border:0;
+	    height:26px;
+}
+
+.pagination>li>a:hover{
+        background-color:#ccc;
+	    color:black;
+}
+
+.pagination>li>a>i{
+	    line-height:16px;
+}
+
+.label{
+        background-color:black;
+	    color:#555;
+}
+
+.latest-label{
+	    background-color:green;
+	    color:white;
+}
+
+.badge-new{
+	    position:relative;
+	    background-color:#600;
+	    color:#ccc;
+	    border:1px solid #ccc;
+	    padding:0 5px;
+	    top:-10px;
+	    left:-8px;
+}
+
+li{
+        padding:10px 0;
+        padding-left:25px;
+        word-wrap:break-word;
+	    color:#ccc;
+}
+
+#msg dt{
+	border-bottom:2px solid black;
+	color:#555;
+}
+
+#product-news .date-label{
+        padding:5px;
+        margin-left:20px;
+}
+
+.order-label{
+        margin-right:5px;
+}
+
+#product-news{
+        position:absolute;
+	    top:20px;
+        right:10%;
+        width:260px;   
+}
+
+/* footer */
+#footer-background,#footer{
+        width:100%;
+        height:100px;
+        z-index:-1;
+}
+
+#footer-background{
+        position:absolute;
+        top:910px;        
+        background-color:black;
+        opacity:0.8;
+        filter:alpha(opacity=80); /* 针对 IE8 以及更早的版本 */
+}
+
+#footer{
+        position:relative;
+        top:-10px;
+}
+
+#footer p{
+        position:relative;
+        text-align:center;
+        color:#ccc;
+        font-weight:bold;
+        font-size:15px;
+}
+
+#footer #copyright{
+	    color:#555;
+	    font-weight:normal;
+}
+
+/* articles */
+.modal-dialog{
+        width:70%;
+}
+
+.modal-content{
+        border-radius: 0;
+}
+
+.modal-header .date-label{
+        position:relative;
+        top:5px;
+}
+
+.btn{
+        background-color:black;
+        border:none;
+}
