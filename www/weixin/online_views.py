@@ -175,11 +175,8 @@ def book_search(request):
     '''
         book search page
     '''
-    c = {
-         'a':'a',
-         }
     
-    return render_to_response('online_search_page.html',c,context_instance=RequestContext(request))
+    return render_to_response('online_search_page.html',context_instance=RequestContext(request))
 
 def search_results(request):
     '''
@@ -207,10 +204,18 @@ def search_results(request):
         
         book_message_json.append(tmp_dict)
     
-    return HttpResponse(simplejson.dumps(book_message_json))
+    response = HttpResponse(simplejson.dumps(book_message_json))
+    cookie_key = get_cookie_key(request,search_string)
+    
+    response.set_cookie(cookie_key['search_key'],search_string)
+    response.set_cookie('max_num',cookie_key['max_num'])
+    
+    return response
     
 def get_books_by_offset(request,search_string='百年孤独',is_offset=0,is_gession=0):
-    
+    '''
+        get books by offset
+    '''
     if not int(is_offset):
         request.session['next_offset'] = 0
         if int(is_gession):
@@ -227,4 +232,27 @@ def get_books_by_offset(request,search_string='百年孤独',is_offset=0,is_gess
     book_message_dict = rapi.search_books(unicode(search_string).encode('utf-8'),offset=request.session['next_offset'],limit=limit)
     
     return book_message_dict
+
+def get_cookie_key(request,search_string):
     
+    cookie_key = {}
+    
+    if request.COOKIES.has_key('max_num'):
+        current_num = int(request.COOKIES['max_num']) + 1
+    else:
+        current_num = 1
+    cookie_key = {
+                  'search_key':str(current_num) + '_search_string',
+                  'max_num':int(current_num),
+                  }
+    
+    return cookie_key
+    
+def get_search_history_from_cookie(request):
+    
+    return 1
+
+    
+def get_view_history_from_cookie(request):
+    
+    return 1
