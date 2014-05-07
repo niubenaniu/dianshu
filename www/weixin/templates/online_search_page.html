@@ -7,22 +7,19 @@
 {% block css %}
 <link href="{{STATIC_URL}}css/online_search_page.css" rel="stylesheet">
 <style>
+a:hover{
+    text-decoration:none;
+    cursor:pointer;
+}
+
+#content,#right-bar{
+	padding:20px 0;
+}
 
 #content{
 	position:relative;
 	width:55%;
 	left:10%;
-	padding:20px 0;
-
-}
-
-#right-bar{
-	position:absolute;
-    width:260px;
-    height:1000px;
-	top:60px;
-    right:10%;
-	background-color:#eee;
 }
 
 #cover{
@@ -32,13 +29,10 @@
 
 #book li{
 	padding:10px 0;
+	padding-left:25px;
 	margin:0;
-	border-top:1px dashed #ccc;
+	border-bottom:1px dashed #ccc;
 	color:#555;
-}
-
-#book h4{
-    color:#69c;
 }
 
 #book span{
@@ -47,33 +41,124 @@
 
 #search-more{
 	text-align:center;
-	color:#555;
 }
 
-#search-more a:hover{
-    text-decoration:none;
-    cursor:pointer;
+#right-bar{
+    position:absolute;
+    width:260px;
+    height:1000px;
+    top:60px;
+    right:10%;
 }
 
-#search-results a:hover{
-    text-decoration:none;
-    cursor:pointer;
+#right-bar span{
+    color:#ccc;
 }
 
+#right-bar li{
+    padding-left:25px;
+    color:#555;
+    width:100%;
+    word-wrap:break-word;
+}
+
+dt h4{
+    color:#555;
+    padding:5px 0;
+    margin:0;
+    border-bottom:2px solid #555;
+}
+
+#book #search-string{
+    color:red;
+}
 </style>
 {% endblock %}
 
 {% block content %}
 <div id="content">
 <div id="book">
-<ul class="media-list" id="search-results">
-</ul>
-<p id="search-more"><a> 查看更多...</a></p>
+<dl>
+  <dd>
+  <ol class="media-list" id="search-results">
+  </ol>
+  </dd>
+</dl>
+<p id="search-more"><span class="icon-spinner icon-spin"></span><a> 哎哟~~~</a></p>
 </div>
 </div>
 <div id="right-bar">
-<p>最近搜索</p>
-<p>最近查看</p>
+<dl>
+  <dt><h4><span class="glyphicon glyphicon-eye-open"></span> 最近搜索</h4></dt>
+  <dd>
+  <ol class="list-unstyled" id="search-history">
+    <li>
+    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
+    </li>
+    <li>
+    <a>xxx</a>
+    </li>
+    <li>
+    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
+    </li>
+    <li>
+    <a>xxx</a>
+    </li>
+    <li>
+    <a>xxx</a>
+    </li>
+    <li>
+    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
+    </li>
+    <li>
+    <a>xxx</a>
+    </li>
+    <li>
+    <a>xxx</a>
+    </li>
+    <li>
+    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
+    </li>
+  </ol>
+  </dd>
+</dl>
+<dl>
+  <dt><h4><span class="glyphicon glyphicon-time"></span> 最近查看</h4></dt>
+  <dd>
+  <ol class="list-unstyled" id="search-history">
+    <li>
+    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
+    </li>
+    <li>
+    <a>xxx</a>
+    </li>
+    <li>
+    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
+    </li>
+    <li>
+    <a>xxx</a>
+    </li>
+    <li>
+    <a>xxx</a>
+    </li>
+    <li>
+    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
+    </li>
+    <li>
+    <a>xxx</a>
+    </li>
+    <li>
+    <a>xxx</a>
+    </li>
+    <li>
+    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
+    </li>
+    <li>
+    <a>xxx</a>
+    </li>
+  </ol>
+  </dd>
+</dl>
 </div>
 {% endblock %}
 

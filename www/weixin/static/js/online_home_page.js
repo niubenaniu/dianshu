@@ -84,9 +84,9 @@ function get_article_by_offset(offset){
         html_li = '<li>';
         html_li += '<span class="label label-default order-label">' + j + '</span>';
         if(offset==1 && j==1){
-            html_li += '<a article-id="' + articles[i]['id'] + '" href="#article-dialog" class="navbar-link"  data-toggle="modal">' + articles[i]['title'] + '<span class="badge badge-new">new</span></a>';
+            html_li += '<span><a article-id="' + articles[i]['id'] + '" href="#article-dialog" class="navbar-link"  data-toggle="modal">' + articles[i]['title'] + '<span class="badge badge-new">new</span></a></span>';
         }else{
-            html_li += '<a article-id="' + articles[i]['id'] + '" href="#article-dialog" class="navbar-link"  data-toggle="modal">' + articles[i]['title'] + '</a>';
+            html_li += '<span><a article-id="' + articles[i]['id'] + '" href="#article-dialog" class="navbar-link"  data-toggle="modal">' + articles[i]['title'] + '</a></span>';
         }
         html_li += '<span class="label label-default date-label">' + articles[i]['publish_date'] + '</span>';
         html_li += '</li>';

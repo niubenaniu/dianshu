@@ -165,11 +165,6 @@ h3#question{
 	    color:#555;
 }
 
-.latest-label{
-	    background-color:green;
-	    color:white;
-}
-
 .badge-new{
 	    position:relative;
 	    background-color:#600;
@@ -177,7 +172,7 @@ h3#question{
 	    border:1px solid #ccc;
 	    padding:0 5px;
 	    top:-10px;
-	    left:-8px;
+	    left:-2px;
 }
 
 li{

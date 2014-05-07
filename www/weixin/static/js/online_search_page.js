@@ -1,6 +1,16 @@
+var search_string = decodeURIComponent(location.search.substr(6));
+if(search_string.length >=10){
+    sub_search_string = search_string.substr(0,10) + '...';
+}else{
+	sub_search_string = search_string;
+}
+var html_dt = '<dt><h4><span class="glyphicon glyphicon-list"></span> <span id="search-string"><em>' + sub_search_string + '</span></em> 的搜索结果</h4></dt>';
+jq('#book dl').prepend(html_dt);
+
+// 获取第一页的搜索结果
 exe_search_ajax(0);
 jq("#book-search").focus();
-jq("#book-search").val(decodeURIComponent(location.search.substr(6)));
+jq("#book-search").val(search_string);
 var search_button = '<button id="search-button" type="submit" class="btn btn-default"><i class="icon-search"></i></button>';
 jq("#book-search").after(search_button);
 
@@ -16,22 +26,23 @@ jq('#search-more a').click(
 
 function exe_search_ajax(is_offset){
 	url = '../search_results/';
-	data = {'search_string':decodeURIComponent(location.search.substr(6)),"is_offset":is_offset};
+	data = {'search_string':search_string,"is_offset":is_offset};
 		
 	jq.ajax({
 	    url:url,
 	    data:data,
 	    dataType:"json",
  	    success:function(data){
+ 	    		
  	    	    jq('#search-more a').text(' 查看更多...');
 
  	    	    if(!data){
  	    	    	    jq('#search-more a').text('好了，就这些啦~~~');
  	    	    }
  	    	    var books = eval(data);
- 	    	    
+ 	    	    	
  	    	    for(i in books){
- 	    	    	    
+
 	 	    	    	var html_li = '<li class="media">';
 	 	    	    	html_li += '<a class="pull-left" href="../book/' + books[i]['isbn'] + '">';
 	 	    	    	html_li += '  <img id="cover" class="media-object" src="' + books[i]['cover'] + '" alt="封面不存在" href="#">';
