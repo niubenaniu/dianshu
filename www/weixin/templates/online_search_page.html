@@ -6,73 +6,6 @@
 
 {% block css %}
 <link href="{{STATIC_URL}}css/online_search_page.css" rel="stylesheet">
-<style>
-a:hover{
-    text-decoration:none;
-    cursor:pointer;
-}
-
-#content,#right-bar{
-	padding:20px 0;
-}
-
-#content{
-	position:relative;
-	width:55%;
-	left:10%;
-}
-
-#cover{
-	width:120px;
-	height:160px;
-}
-
-#book li{
-	padding:10px 0;
-	padding-left:25px;
-	margin:0;
-	border-bottom:1px dashed #ccc;
-	color:#555;
-}
-
-#book span{
-    color:#ccc;
-}
-
-#search-more{
-	text-align:center;
-}
-
-#right-bar{
-    position:absolute;
-    width:260px;
-    height:1000px;
-    top:60px;
-    right:10%;
-}
-
-#right-bar span{
-    color:#ccc;
-}
-
-#right-bar li{
-    padding-left:25px;
-    color:#555;
-    width:100%;
-    word-wrap:break-word;
-}
-
-dt h4{
-    color:#555;
-    padding:5px 0;
-    margin:0;
-    border-bottom:2px solid #555;
-}
-
-#book #search-string{
-    color:red;
-}
-</style>
 {% endblock %}
 
 {% block content %}
@@ -92,70 +25,13 @@ dt h4{
   <dt><h4><span class="glyphicon glyphicon-eye-open"></span> 最近搜索</h4></dt>
   <dd>
   <ol class="list-unstyled" id="search-history">
-    <li>
-    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
-    </li>
-    <li>
-    <a>xxx</a>
-    </li>
-    <li>
-    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
-    </li>
-    <li>
-    <a>xxx</a>
-    </li>
-    <li>
-    <a>xxx</a>
-    </li>
-    <li>
-    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
-    </li>
-    <li>
-    <a>xxx</a>
-    </li>
-    <li>
-    <a>xxx</a>
-    </li>
-    <li>
-    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
-    </li>
   </ol>
   </dd>
 </dl>
-<dl>
+<dl id="view-history-clear">
   <dt><h4><span class="glyphicon glyphicon-time"></span> 最近查看</h4></dt>
   <dd>
-  <ol class="list-unstyled" id="search-history">
-    <li>
-    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
-    </li>
-    <li>
-    <a>xxx</a>
-    </li>
-    <li>
-    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
-    </li>
-    <li>
-    <a>xxx</a>
-    </li>
-    <li>
-    <a>xxx</a>
-    </li>
-    <li>
-    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
-    </li>
-    <li>
-    <a>xxx</a>
-    </li>
-    <li>
-    <a>xxx</a>
-    </li>
-    <li>
-    <a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a>
-    </li>
-    <li>
-    <a>xxx</a>
-    </li>
+  <ol class="list-unstyled" id="view-history">
   </ol>
   </dd>
 </dl>
