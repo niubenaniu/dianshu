@@ -144,7 +144,10 @@ def details_page(request,book_isbn):
          'rating_details':1,
          }
     
-    return render_to_response('online_details_page.html',c,context_instance=RequestContext(request))
+    response = render_to_response('online_details_page.html',c,context_instance=RequestContext(request))
+    set_cookie(request,response,book_isbn,type='view')
+    
+    return response
 
 def book_gession(request,search_string,is_gession):
     '''
@@ -193,7 +196,7 @@ def search_results(request):
     for book_message in book_message_dict['books']:
         
         tmp_dict = {
-                    'cover':book_message['images']['small'],
+                    'cover':book_message['images']['large'],
                     'title':book_message['title'],
                     'author':book_message['author'],
                     'publisher':book_message['publisher'],
@@ -205,10 +208,8 @@ def search_results(request):
         book_message_json.append(tmp_dict)
     
     response = HttpResponse(simplejson.dumps(book_message_json))
-    cookie_key = get_cookie_key(request,search_string)
     
-    response.set_cookie(cookie_key['search_key'],search_string)
-    response.set_cookie('max_num',cookie_key['max_num'])
+    set_cookie(request,response,search_string)
     
     return response
     
@@ -233,26 +234,104 @@ def get_books_by_offset(request,search_string='百年孤独',is_offset=0,is_gess
     
     return book_message_dict
 
-def get_cookie_key(request,search_string):
+def get_cookie_key(request,type='search'):
+    '''
+        get cookie key
+        type:
+            search: search_history
+            view: view history
+    '''
     
     cookie_key = {}
     
-    if request.COOKIES.has_key('max_num'):
-        current_num = int(request.COOKIES['max_num']) + 1
+    max_num = type + '_max_num'
+    key_string = '_' + type + '_string'
+    
+    if request.COOKIES.has_key(max_num):
+        current_num = int(request.COOKIES[max_num]) + 1
     else:
         current_num = 1
+
     cookie_key = {
-                  'search_key':str(current_num) + '_search_string',
-                  'max_num':int(current_num),
+                  'key':str(current_num) + key_string,
+                  max_num:current_num,
                   }
     
     return cookie_key
     
+def set_cookie(request,response,value,type='search'):
+    '''
+        set cookie
+        type:
+            search: search_history
+            view: view history
+    '''
+    
+    cookie_key = get_cookie_key(request,type)
+    max_num = type + '_max_num'
+    value = unicode(value).encode('UTF-8')
+    
+    response.set_cookie(cookie_key['key'],value)
+    response.set_cookie(max_num,cookie_key[max_num])
+
+def get_history_from_cookie(request,type='search',limit=10):
+    '''
+        get search/view history from cookie by default 10 items
+        type:
+            search: search_history
+            view: view history
+    '''
+    
+    max_num = type + '_max_num'
+
+    if request.COOKIES.has_key(max_num):
+        index_end = request.COOKIES[max_num]
+        index_start = int(index_end) - int(limit) if int(index_end) > int(limit) else 1
+        key_string = '_' + type + '_string'
+        history_list = []
+        
+        if int(index_end) == 1:
+            history_list.append(request.COOKIES['1' + key_string])
+        elif int(index_end) < 10:
+            start = int(index_start)
+        else:
+            start = int(index_start) + 1
+        end = int(index_end) + 1
+        
+        for i in xrange(start,end):
+            current_key = str(i) + key_string
+            history_list.append(request.COOKIES[current_key])
+        history_list.reverse()
+        return HttpResponse(simplejson.dumps(history_list))
+    else:
+        return HttpResponse(simplejson.dumps(['error']))
+
 def get_search_history_from_cookie(request):
     
-    return 1
+    return get_history_from_cookie(request,type='search',limit=20)
 
-    
 def get_view_history_from_cookie(request):
     
-    return 1
+    isbn_list = get_history_from_cookie(request,type='view')
+    rapi = RequestService_douban()
+
+    book_message_dict = {}
+    book_message_json = []
+    tmp_dict = {}
+
+    for book_isbn in simplejson.loads(isbn_list.content):
+        book_message_dict = rapi.search_book_by_isbn(book_isbn)
+
+        tmp_dict = {
+                    'cover':book_message_dict['images']['large'],
+                    'title':book_message_dict['title'],
+                    'author':book_message_dict['author'],
+                    'publisher':book_message_dict['publisher'],
+                    'pub_date':book_message_dict['pubdate'],
+                    'price':book_message_dict['price'],
+                    'isbn':str(book_message_dict['isbn13']) if book_message_dict.has_key('isbn13') else book_message_dict['isbn10'],
+                    }
+
+        book_message_json.append(tmp_dict)
+
+    return  HttpResponse(simplejson.dumps(book_message_json))
