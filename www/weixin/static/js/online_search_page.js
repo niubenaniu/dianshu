@@ -63,10 +63,90 @@ function exe_search_ajax(is_offset){
  	    	    }
  	    		// 请求完成之后去掉旋转图标
  	    		jq('.icon-spinner').remove();
+ 	    		
+                if(!is_offset){
+	 	    		get_search_history();
+	 	    		get_view_history();
+                }
 	    },
         error:function(XHRObj,msg,e){
         	    jq('#search-more a').text('好了，就这些啦~~~');
         	    jq('.icon-spinner').remove();
+        	    
+                if(!is_offset){
+	 	    		get_search_history();
+	 	    		get_view_history();
+                }
 	    } 
+	});
+}
+
+function get_search_history(){
+	var url = '../get_search_history/';
+	jq.ajax({
+	    url:url,
+	    dataType:"json",
+        success:function(data){
+            var historys = eval(data);
+
+        	if (data == 'error'){
+        		jq('#search-history').append('<li><p>随便看看吧~~~</p></li>');
+        	}else{
+        		    var html_li ='<li>';
+                for(i in historys){
+                	
+                	if(historys[i].length >=10){
+                	    history = historys[i].substr(0,18) + '...';
+                	}else{
+                		history = historys[i];
+                	}
+    	 		    html_li += '<a href="../search?name=' + history + '"><span class="label label-default">' + history + '</span></a>';
+        	    }
+                html_li += '</li>';
+                jq('#search-history').append(html_li);
+            }
+ 	    },
+	});
+}
+
+function get_view_history(){
+	var url = '../get_view_history/';
+	jq.ajax({
+	    url:url,
+	    dataType:"json",
+        success:function(data){
+            var books = eval(data);
+        	if (data == 'error'){
+        		jq('#view-history').append('<li><p>随便看看吧~~~</p></li>');
+        	}else{
+                for(i in books){
+                	
+/*                	if(historys[i].length >=10){
+                	    history = historys[i].substr(0,15) + '...';
+                	}else{
+                		history = historys[i];
+                	}*/
+                	
+                	
+ 	    	    	var html_li = '<li class="media">';
+ 	    	    	html_li += '<a class="pull-left" href="../book/' + books[i]['isbn'] + '">';
+ 	    	    	html_li += '  <img id="cover" class="media-object" src="' + books[i]['cover'] + '" alt="封面不存在" href="#">';
+ 	    	    	html_li += ' </a>';
+ 	    	    	html_li += '<div class="media-body">';
+ 	    	    	html_li += '  <h5 class="media-heading"><a href="../book/' + books[i]['isbn'] + '">' + books[i]['title'] + '</a></h5>';
+ 	    	    	html_li += '  <small><span>作者：</span>' + books[i]['author'] + '</small>';
+ 	    	    	html_li += '  <small><span>出版社：</span>' + books[i]['publisher'] + '</small>';
+ 	    	    	html_li += '  <small><span>出版年：</span>' + books[i]['pub_date'] + '</small>';
+ 	    	    	if(!books[i]['price']){
+ 	    	    		books[i]['price'] = '暂无';
+ 	    	    	}
+ 	    	    	html_li += '  <small><span>定价：</span>' + books[i]['price'] + '</small>';
+ 	    	    	html_li += '</div>';
+ 	    	    	html_li += '</li>';
+
+    	 		    jq('#view-history').append(html_li);
+        	    }
+            }
+ 	    },
 	});
 }
