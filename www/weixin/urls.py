@@ -27,6 +27,8 @@ urlpatterns += patterns('weixin.online_views',
     url(r'^get_user_count/$', 'get_user_count'),
     url(r'^book_gession/(?P<search_string>.+)/(?P<is_gession>\d)$', 'book_gession'),
     url(r'^get_article_by_offset/(?P<offset>.+)$', 'get_article_by_offset'),
+    url(r'^get_search_history/$', 'get_search_history_from_cookie'),
+    url(r'^get_view_history/$', 'get_view_history_from_cookie'),
 )
 
 # online book page
