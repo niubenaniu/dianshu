@@ -22,6 +22,7 @@ urlpatterns += patterns('weixin.online_views',
 
 # online home page
 urlpatterns += patterns('weixin.online_views',
+    url(r'^$/?', 'index'),
     url(r'^home/$', 'online_home_page'),
     url(r'^get_article_by_id/(?P<article_id>\d+)$', 'get_article_by_id'),
     url(r'^get_user_count/$', 'get_user_count'),

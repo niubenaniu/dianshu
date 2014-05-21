@@ -9,6 +9,10 @@ import simplejson
 from api_douban.service import RequestService as RequestService_douban
 from models import Article,User
 
+def index(request):
+    
+    return render_to_response('index.html')
+
 def article_record(request):
     
     return render_to_response('article_record/article_record.html',context_instance=RequestContext(request))

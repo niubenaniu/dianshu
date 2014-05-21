@@ -2,19 +2,19 @@
 <div class="list-group-item">      
   <table class="comment">
     <tr>
-      <td style="width:20%">
-      <img class="userpic img-circle" src="{{review.author_image}}"/>
+      <td style="text-align:center">
+      <img style="width:100px" class="userpic img-circle" src="{{review.author_image}}"/>
 	  </td>
-	  <td style="width:80%">              
+	  <td style="width:88%">              
         <article>
           <header>
-            <div class="username">{{review.author_name}}<span class="review_rating" style="display:none">{{review.rating}}</span></div>
+            <div id="comment-user"><span id='username'><i class="icon-user"></i>&nbsp;{{review.author_name}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="review_rating" style="display:none" id="comment-stars">{{review.rating}}</span></div>
           </header>
           <section>
-            <p>【{{review.title}}】<a href="{{review.link}}">{{review.summary}}</a></p>
+            <p id="comment-content"><span id="comment-title">【{{review.title}}】</span><a href="{{review.link}}">{{review.summary}}</a></p>
           </section>
           <footer>
-            <p>{{review.published}}赞成({{review.votes}})|反对({{review.useless}})</p>
+            <p id="comment-vote">{{review.published}}<span id='vote'><i class="icon-thumbs-up"></i>&nbsp;{{review.votes}}&nbsp;&nbsp;<i class="icon-thumbs-down"></i>&nbsp;{{review.useless}}</span></p>
           </footer>
         </article>
       </td>

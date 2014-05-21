@@ -382,7 +382,7 @@ def get_book_reviews_by_offset_sina(request,is_offset):
                   'user':book_review['user'].decode('unicode-escape'),
                   # 时间比较新，所以微博的数据实时性还是很高的。
                   'time':book_review['time'].decode('unicode-escape'),
-                  'comment':book_review['comment'].decode('unicode-escape'),
+                  'comment':book_review['comment'].decode('unicode-escape').replace(r'\/',r'/'),
                   'judge':book_review['num'],
                   }
         
@@ -390,9 +390,9 @@ def get_book_reviews_by_offset_sina(request,is_offset):
     
     c = {
          'reviews':reviews,
-         }
-    
-    return render_to_response('third_party_content/book_reviews_sina.html',c)
+         }    
+    #return render_to_response('third_party_content/book_reviews_sina.html',simplejson.dumps(c))
+    return HttpResponse(simplejson.dumps(c))
 
 def get_book_reviews_by_offset_tencent(request,is_offset):
 
@@ -420,12 +420,9 @@ def get_book_reviews_by_offset_renren(request,is_offset):
     c = {
          'reviews':reviews,
          }
-
-    return render_to_response('third_party_content/book_reviews_renren.html',c)
-
-'''def test_page(request):
-    
-    return render_to_response('test_page.html')'''
+    print simplejson.dumps(c)
+    #return render_to_response('third_party_content/book_reviews_renren.html',c)
+    return HttpResponse(simplejson.dumps(c))
 
 def get_old_article():
     '''

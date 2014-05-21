@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 # dianshu for weixin
 urlpatterns += patterns('',
     url(r'^weixin/', include('weixin.urls')),
+    url(r'^$/?', include('weixin.urls')),
 )
 
 # dianshu for web

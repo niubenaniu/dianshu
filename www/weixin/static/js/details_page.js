@@ -28,7 +28,7 @@ jq(function(){
 // 生成饼图
 jq(function(){
 	
-	var url = 'http://115.28.3.240/weixin/get_ratings/';
+	var url = '../get_ratings/';
 	
     jq.ajax({
         url:url,
@@ -87,7 +87,7 @@ jq(function(){
 	);
   
 // 全局数据
-var url_nooffset = 'http://115.28.3.240/weixin/get_book_reviews_by_offset/';
+var url_nooffset = '../get_book_reviews_by_offset/';
 var url_offset = url_nooffset + '1';
 
 var data_param = 'source='
@@ -180,17 +180,33 @@ function exe_ajax(url,data){
 	reg_result = reg_exp.exec(data);
 	id = '#' +　reg_result[1] +　'-list-group';
 	flag = 'flag_' + reg_result[1];
-
+    if(id == '#douban-list-group'){
+    	data_type = 'html';
+    }else{
+    	data_type = 'json';
+    }
+	
 	jq.ajax({
 	    url:url,
 	    data:data,
-	    dataType:"html",
- 	    success:function(data){
- 	    		jq(id).append(data);
+	    dataType:data_type,
+ 	    success:function(comments){
+ 	    	    if(id == '#douban-list-group'){
+ 	    			jq(id).append(comments);
+ 	    		}else{
+ 	    			if(id == '#sina-list-group'){
+ 	    				var type = 'sina';
+ 	    			}else if(id == '#renren-list-group'){
+ 	    				var type = 'renren';
+ 	    			}
+ 	    			var comment_list = eval(comments);	    			
+ 	    			var html_review = generate_reviews(comment_list['reviews'],type);
+ 	    			jq(id).html(html_review);
+ 	    		} 
  	    		// 请求完成之后去掉旋转图标
  	    		jq('.icon-spinner').remove();
  	    		// 设置标志位，只在第一次点开标签页的时候加载初始数据。
- 	    		flags[flag] = 1;	
+ 	    		flags[flag] = 1;
 	    },
         error:function(XHRObj,msg,e){
 	    	//error_msg = '<p class="error">' +　msg + ": " +　e + '</p>'
@@ -203,6 +219,63 @@ function exe_ajax(url,data){
 
 }
 
+function generate_reviews(reviews,type){
+		var html_review = '';
+		var praise = 0;
+		var retweets = 0;
+		var review = 0;
+
+	    for(i in eval(reviews)){
+         	html_review += '<div class="list-group-item">';      
+			html_review += '  <table class="comment">'; 
+			html_review += '    <tr>'; 
+			html_review += '      <td style="text-align:center">'; 
+			html_review += '      <img style="width:100px" class="userpic img-circle" src="' + reviews[i]['image'] + '"/>'; 
+			html_review += '	  </td>'; 
+			html_review += '	  <td style="width:88%">';               
+			html_review += '        <article>'; 
+			html_review += '          <header>'; 
+			html_review += '	            <div id="comment-user"><span id="username"><i class="icon-user"></i>&nbsp;' + reviews[i]['user'] + '</span></div>'; 
+			html_review += '         </header>'; 
+			html_review += '         <section>'; 
+			html_review += '           <p id="comment-content">' + reviews[i]['comment'].replace('\/','/') + '</p>'; 
+			html_review += '          </section>'; 
+			html_review += '          <footer>'; 
+
+			if(type == 'sina'){
+				if(reviews[i]['judge']['praises']){
+					praise = reviews[i]['judge']['praises'];
+				}else{
+					praise = 0;
+				}
+				
+				if(reviews[i]['judge']['retweets']){
+					retweets = reviews[i]['judge']['retweets'];
+				}else{
+					retweets = 0;
+				}
+				
+				if(reviews[i]['judge']['reviews']){
+					review = reviews[i]['judge']['reviews'];
+				}else{
+					review = 0;
+				}
+				
+				html_review += '            <p id="comment-vote">' + reviews[i]['time'] + '<span id="vote"><i class="icon-thumbs-up"></i>&nbsp;' + praise + '&nbsp;&nbsp;<i class=" icon-share-alt"></i>&nbsp;' + retweets + '&nbsp;&nbsp;<i class=" icon-comment"></i>&nbsp;' + review + '</span></p>'; 
+			}else if(type == 'renren'){
+				html_review += '            <p id="comment-vote">' + reviews[i]['time'] + '</p>';
+			}
+
+			html_review += '          </footer>'; 
+			html_review += '        </article>'; 
+			html_review += '      </td>'; 
+			html_review += '    </tr>'; 
+			html_review += '  </table>'; 
+			html_review += '</div>'; 
+		}
+
+	    return html_review;
+}
 // 生成评论部分星评
 function generate_review_rating(){
     jq('.review_rating').each(
