@@ -84,5 +84,5 @@ class RequestService:
 if __name__ == '__main__':
     log.initlog('', True)
     rs = RequestService()
-    rs.search_comment('百年孤独')
+    print rs.search_comment('百年孤独')
     
