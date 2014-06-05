@@ -21,7 +21,7 @@ jq("#book-search").focus(function(){
 );
 
 jq("#book-search").blur(function(){
-	jq("#gession").empty();
+	setTimeout('jq("#gession").empty()',100);
 	jq("#book-search").addClass('book-search-blur');
 	if(!jq("#book-search").val()){
 		jq(".form-control").animate({width:'258px'},300);

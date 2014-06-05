@@ -342,3 +342,7 @@ def get_view_history_from_cookie(request):
         book_message_json.append(tmp_dict)
 
     return  HttpResponse(simplejson.dumps(book_message_json))
+
+def home(request):
+    
+    return render_to_response('home.html')

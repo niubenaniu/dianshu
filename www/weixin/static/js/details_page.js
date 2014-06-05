@@ -210,7 +210,7 @@ function exe_ajax(url,data){
 	    },
         error:function(XHRObj,msg,e){
 	    	//error_msg = '<p class="error">' +　msg + ": " +　e + '</p>'
-	    	error_msg = '<p class="error">' + '抱歉！没有找到相关评论~' + '</p>';
+	    	error_msg = '<p class="error"><i class="icon-warning-sign"></i>' + ' 抱歉！没有找到相关评论~' + '</p>';
 	    	jq(id).append(error_msg);
             // 设置标志位，没有加载出评论时，也不再在每次点开标签时加载数据。
             flags[flag] = 1;

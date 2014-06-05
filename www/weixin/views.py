@@ -335,7 +335,7 @@ def get_book_reviews_by_offset_douban(request,is_offset=0):
 
     rapi = RequestService_douban()
     book_reviews = rapi.get_book_reviews(book_id.encode('utf-8'),offset=request.session['next_offset_douban'])
-    
+
     reviews = []
     reg_exp = re.compile(r'(\d+\-\d+\-\d+).*?(\d+\:\d+)\:')
     
@@ -420,7 +420,7 @@ def get_book_reviews_by_offset_renren(request,is_offset):
     c = {
          'reviews':reviews,
          }
-    print simplejson.dumps(c)
+
     #return render_to_response('third_party_content/book_reviews_renren.html',c)
     return HttpResponse(simplejson.dumps(c))
 

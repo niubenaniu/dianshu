@@ -1,5 +1,12 @@
 @CHARSET "UTF-8";
-a:hover{
+#content a:hover{
+    text-decoration:none;
+    cursor:pointer;
+    color:white;
+    background-color:rgb(66, 139, 202);
+}
+
+#right-bar a:hover{
     text-decoration:none;
     cursor:pointer;
     color:white;

@@ -30,6 +30,7 @@ urlpatterns += patterns('weixin.online_views',
     url(r'^get_article_by_offset/(?P<offset>.+)$', 'get_article_by_offset'),
     url(r'^get_search_history/$', 'get_search_history_from_cookie'),
     url(r'^get_view_history/$', 'get_view_history_from_cookie'),
+    url(r'^test/$', 'home')
 )
 
 # online book page
